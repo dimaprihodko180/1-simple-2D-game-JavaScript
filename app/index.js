@@ -1,4 +1,3 @@
-import { Entities } from "./canvas/entities.js"
+import { main } from "./main/main.js"
 
-const entities = new Entities()
-entities.animate()
+main()
