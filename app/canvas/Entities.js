@@ -1,4 +1,5 @@
 export class Entities {
+  #x = 0
   #ctx
   #canvas
   #canvasId
@@ -19,7 +20,8 @@ export class Entities {
 
   animate() {
     this.#ctx.clearRect(0, 0, this.#gCanvasWidth, this.#gCanvasHeigh)
-    this.#ctx.fillRect(50, 50, 100, 100)
+    this.#ctx.fillRect(this.#x, 50, 100, 100)
+    this.#x++
     requestAnimationFrame(this.animate)
   }
 }
