@@ -5,7 +5,6 @@ export class Entities {
   #gCanvasWidth
   #gCanvasHeigh
   #playerImage
-  #numberFrames = 11
   #spriteWidth = 575
   #spriteHeigh = 523
   #gameFrame = 0
@@ -24,6 +23,8 @@ export class Entities {
     { name: "getHit", frames: 4 },
   ]
   #statePosition = this.#animationStates[0].name
+  #playerState = "getHit" // Перемещаем playerState сюда
+
   constructor(canvasId = "canvas-1") {
     this.#canvasId = canvasId
     this.#canvas = document.getElementById(this.#canvasId)
@@ -37,7 +38,9 @@ export class Entities {
     this.#playerImage.src = "/img/shadow_dog.png"
     this.animate = this.animate.bind(this)
     this.#initAnimations()
+    this.#setupDropdownListener() // Вызов метода для установки слушателя
   }
+
   #initAnimations() {
     this.#animationStates.forEach((state, index) => {
       let frame = { loc: [] }
@@ -49,17 +52,27 @@ export class Entities {
       this.#spriteAnimations[state.name] = frame
     })
   }
+
+  #setupDropdownListener() {
+    const dropdown = document.getElementById("animations")
+    dropdown.addEventListener("change", (e) => {
+      console.log(e)
+      this.#playerState = e.target.value // Изменяем состояние на значение из выпадающего списка
+    })
+  }
+
   #toAnimate() {
     this.#ctx.clearRect(0, 0, this.#gCanvasWidth, this.#gCanvasHeigh)
-    if (!this.#spriteAnimations[this.#statePosition]) {
-      console.error("Animation 'jump' not initialized.")
+    if (!this.#spriteAnimations[this.#playerState]) {
+      // Используем #playerState вместо #statePosition
+      console.error(`Animation '${this.#playerState}' not initialized.`)
       return
     }
     let position =
       Math.floor(this.#gameFrame / this.#staggerFrame) %
-      this.#spriteAnimations[this.#statePosition].loc.length
-    let frameX = this.#spriteAnimations[this.#statePosition].loc[position].x
-    let frameY = this.#spriteAnimations[this.#statePosition].loc[position].y
+      this.#spriteAnimations[this.#playerState].loc.length // Используем #playerState
+    let frameX = this.#spriteAnimations[this.#playerState].loc[position].x // Используем #playerState
+    let frameY = this.#spriteAnimations[this.#playerState].loc[position].y // Используем #playerState
     this.#ctx.drawImage(
       this.#playerImage,
       frameX,
@@ -74,6 +87,7 @@ export class Entities {
     this.#gameFrame++
     requestAnimationFrame(this.animate)
   }
+
   animate() {
     this.#toAnimate()
   }
