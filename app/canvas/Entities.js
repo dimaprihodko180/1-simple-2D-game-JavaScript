@@ -23,7 +23,7 @@ export class Entities {
     { name: "getHit", frames: 4 },
   ]
   #statePosition = this.#animationStates[0].name
-  #playerState = "getHit" // Перемещаем playerState сюда
+  #playerState = "getHit"
 
   constructor(canvasId = "canvas-1") {
     this.#canvasId = canvasId
@@ -38,7 +38,7 @@ export class Entities {
     this.#playerImage.src = "/img/shadow_dog.png"
     this.animate = this.animate.bind(this)
     this.#initAnimations()
-    this.#setupDropdownListener() // Вызов метода для установки слушателя
+    this.#setupDropdownListener()
   }
 
   #initAnimations() {
@@ -57,22 +57,21 @@ export class Entities {
     const dropdown = document.getElementById("animations")
     dropdown.addEventListener("change", (e) => {
       console.log(e)
-      this.#playerState = e.target.value // Изменяем состояние на значение из выпадающего списка
+      this.#playerState = e.target.value
     })
   }
 
   #toAnimate() {
     this.#ctx.clearRect(0, 0, this.#gCanvasWidth, this.#gCanvasHeigh)
     if (!this.#spriteAnimations[this.#playerState]) {
-      // Используем #playerState вместо #statePosition
       console.error(`Animation '${this.#playerState}' not initialized.`)
       return
     }
     let position =
       Math.floor(this.#gameFrame / this.#staggerFrame) %
-      this.#spriteAnimations[this.#playerState].loc.length // Используем #playerState
-    let frameX = this.#spriteAnimations[this.#playerState].loc[position].x // Используем #playerState
-    let frameY = this.#spriteAnimations[this.#playerState].loc[position].y // Используем #playerState
+      this.#spriteAnimations[this.#playerState].loc.length
+    let frameX = this.#spriteAnimations[this.#playerState].loc[position].x
+    let frameY = this.#spriteAnimations[this.#playerState].loc[position].y
     this.#ctx.drawImage(
       this.#playerImage,
       frameX,
