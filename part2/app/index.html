@@ -9,7 +9,16 @@
   <body>
     <div id="main-container">
       <canvas id="canvas1"></canvas>
+      <p>Скорость игры: <span class="show-game-speed"></span></p>
+      <input
+        type="range"
+        min="0"
+        max="20"
+        value="5"
+        class="slider"
+        id="slider"
+      />
     </div>
-    <script src="index.js"></script>
+    <script src="index.js" type="module"></script>
   </body>
 </html>
