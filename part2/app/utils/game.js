@@ -25,7 +25,7 @@ export function initializeGame() {
   const showGameSpeed = document.querySelector(".show-game-speed")
   showGameSpeed.innerHTML = gameSpeed
 
-  slider.addEventListener("input", (e) => {
+  slider.addEventListener("change", (e) => {
     gameSpeed = parseInt(e.target.value, 10)
     showGameSpeed.innerHTML = gameSpeed
   })

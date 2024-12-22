@@ -1,3 +1,5 @@
 import { initializeGame } from "./utils/game.js"
 
-initializeGame()
+window.addEventListener("load", () => {
+  initializeGame()
+})
