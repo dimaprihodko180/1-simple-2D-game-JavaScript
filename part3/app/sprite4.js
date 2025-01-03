@@ -1,65 +1,76 @@
-// ПОДКЛЮЧЕНИЕ HTML - КОНТЕКСТА И ОБЪЯВЛЕНИЕ ВАЖНЫХ ПЕРЕМЕННЫХ
-//-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
-/**@type {HTMLCanvasElement} */
-const canvas = document.getElementById("canvas-1");
-const ctx = canvas.getContext("2d");
-CANVAS_WIDTH = canvas.width = 500;
-CANVAS_HEIGHT = canvas.height = 2 * CANVAS_WIDTH;
-const numberOfEnemies = 10;
-const storageOfEnemies = [];
-// ПОДКЛЮЧЕНИЕ ИЗОБРАЖЕНИЙ
-//-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+// Константы
+const CANVAS_WIDTH = 500;
+const CANVAS_HEIGHT = 2 * CANVAS_WIDTH;
+const ENEMY_COUNT = 10;
+const SPRITE_WIDTH = 213;
+const SPRITE_SCALE = 2;
+const INTERVAL_RANGE = { min: 50, max: 200 };
+const ENEMY_IMAGE_SRC = "../img/enemies/enemy4.png";
+const SMOOTHING_FACTOR = 70;
 
+/** @type {HTMLCanvasElement} */
+const canvas = document.getElementById("canvas-1");
+const context = canvas.getContext("2d");
+canvas.width = CANVAS_WIDTH;
+canvas.height = CANVAS_HEIGHT;
+
+const enemies = [];
 let gameFrame = 0;
-// СОЗДАНИЕ КЛАССА "БОТ"
-//-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+
 class Enemy {
+  #image;
+  #width;
+  #height;
+  #x;
+  #y;
+  #targetX;
+  #targetY;
+  #frame;
+  #flapSpeed;
+  #interval;
+
   constructor() {
-    this.enemyImage = new Image();
-    this.enemyImage.src = "../img/enemies/enemy4.png";
-    this.speed = Math.random() * 4 + 1;
-    this.spriteWidth = 213;
-    this.spriteHeight = this.spriteWidth;
-    this.width = this.spriteWidth / 2;
-    this.height = this.spriteHeight / 2;
-    this.x = Math.random() * canvas.width;
-    this.y = Math.random() * canvas.height;
-    this.newX = Math.random() * (canvas.width - this.width);
-    this.newY = Math.random() * (canvas.height - this.height);
-    this.frame = 0;
-    this.flapSpeed = Math.floor(Math.random() * 3 + 1);
-    this.intervl = Math.floor(Math.random() * 200 + 50);
+    this.#image = new Image();
+    this.#image.src = ENEMY_IMAGE_SRC;
+    this.#width = SPRITE_WIDTH / SPRITE_SCALE;
+    this.#height = SPRITE_WIDTH / SPRITE_SCALE;
+    this.#x = Math.random() * CANVAS_WIDTH;
+    this.#y = Math.random() * CANVAS_HEIGHT;
+    this.#targetX = Math.random() * (CANVAS_WIDTH - this.#width);
+    this.#targetY = Math.random() * (CANVAS_HEIGHT - this.#height);
+    this.#frame = 0;
+    this.#flapSpeed = Math.floor(Math.random() * 3 + 1);
+    this.#interval = Math.floor(
+      Math.random() * (INTERVAL_RANGE.max - INTERVAL_RANGE.min) + INTERVAL_RANGE.min
+    );
   }
 
   #update() {
-    if (gameFrame % this.intervl === 0) {
-      this.newX = Math.random() * (canvas.width - this.width);
-      this.newY = Math.random() * (canvas.height - this.height);
+    if (gameFrame % this.#interval === 0) {
+      this.#targetX = Math.random() * (CANVAS_WIDTH - this.#width);
+      this.#targetY = Math.random() * (CANVAS_HEIGHT - this.#height);
     }
-    let dx = this.x - this.newX;
-    let dy = this.y - this.newY;
-    this.x -= dx / 70;
-    this.y -= dy / 70;
-    this.angle += this.angleSpeed;
-    if (this.x + this.width < 0) {
-      this.x = canvas.width;
-    }
-    if (gameFrame % this.flapSpeed === 0) {
-      this.frame > 4 ? (this.frame = 0) : this.frame++;
+    const dx = this.#x - this.#targetX;
+    const dy = this.#y - this.#targetY;
+    this.#x -= dx / SMOOTHING_FACTOR;
+    this.#y -= dy / SMOOTHING_FACTOR;
+
+    if (gameFrame % this.#flapSpeed === 0) {
+      this.#frame = this.#frame >= 4 ? 0 : this.#frame + 1;
     }
   }
 
   #draw() {
-    ctx.drawImage(
-      this.enemyImage,
-      this.frame * this.spriteWidth,
+    context.drawImage(
+      this.#image,
+      this.#frame * SPRITE_WIDTH,
       0,
-      this.spriteWidth,
-      this.spriteHeight,
-      this.x,
-      this.y,
-      this.width,
-      this.height
+      SPRITE_WIDTH,
+      SPRITE_WIDTH,
+      this.#x,
+      this.#y,
+      this.#width,
+      this.#height
     );
   }
 
@@ -69,21 +80,15 @@ class Enemy {
   }
 }
 
-// СОЗДАНИЕ АНИМАЦИИ
-//-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
-for (let i = 0; i < numberOfEnemies; i++) {
-  storageOfEnemies.push(new Enemy());
+for (let i = 0; i < ENEMY_COUNT; i++) {
+  enemies.push(new Enemy());
 }
 
 function animate() {
-  ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-  storageOfEnemies.forEach((enemy) => {
-    enemy.animate();
-  });
+  context.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+  enemies.forEach((enemy) => enemy.animate());
   gameFrame++;
   requestAnimationFrame(animate);
 }
 
-// ЗАПУСК АНИМАЦИИ
-//-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 animate();
