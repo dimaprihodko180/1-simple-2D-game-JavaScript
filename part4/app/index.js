@@ -5,7 +5,6 @@ canvas.width = 500;
 canvas.height = 700;
 
 let explosions = [];
-const canvasPosition = canvas.getBoundingClientRect();
 
 class Explosion {
   constructor(x, y) {
@@ -69,10 +68,12 @@ class Explosion {
 }
 
 function createAnimation(e) {
-  const positionX = e.x - canvasPosition.left;
-  const positionY = e.y - canvasPosition.top;
-  explosions.push(new Explosion(positionX, positionY));
-}
+    const canvasPosition = canvas.getBoundingClientRect();
+    const positionX = e.x - canvasPosition.left;
+    const positionY = e.y - canvasPosition.top;
+    explosions.push(new Explosion(positionX, positionY));
+  }
+  
 
 function animate() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
