@@ -8,18 +8,18 @@ let explosions = [];
 
 class Explosion {
   constructor(x, y) {
-    this.spriteWidth = 200;
+    this.spriteWidth = 100;
     this.spriteHeight = 179;
     this.scale = 0.7;
     this.width = this.spriteWidth * this.scale;
     this.height = this.spriteHeight * this.scale;
     this.x = x;
     this.y = y;
-    this.image = Explosion.loadImage("/part4/img/boom.png");
+    this.image = Explosion.loadImage("../img/boom.png");
     this.frame = 0;
     this.timer = 0;
     this.angle = Math.random() * Math.PI * 2;
-    this.sound = Explosion.loadSound("/part4/audio/boom.wav");
+    this.sound = Explosion.loadSound("../audio/boom.wav");
   }
 
   static loadImage(src) {
