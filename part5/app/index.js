@@ -33,6 +33,7 @@ let timeToNextRaven = 0;
 let lastTimestamp = 0;
 let ravens = [];
 let explosions = [];
+let gameOver = false;
 
 class Raven {
   constructor() {
@@ -69,6 +70,8 @@ class Raven {
       Math.floor(Math.random() * 255),
     ];
     this.color = `rgb(${this.randomColors.join(", ")})`;
+
+    this.hasTrail = Math.random() > 0.5;
   }
 
   update(deltaTime) {
@@ -85,7 +88,13 @@ class Raven {
     if (this.timeSinceFlap > this.flapInterval) {
       this.frame = (this.frame + 1) % (this.maxFrame + 1);
       this.timeSinceFlap = 0;
+      if (this.hasTrail) {
+        for (let i = 0; i < 5; i++) {
+          particles.push(new Particle(this.x, this.y, this.width, this.color));
+        }
+      }
     }
+    if (this.x < -this.width) gameOver = true;
   }
 
   draw() {
@@ -150,6 +159,35 @@ class Explosion {
   }
 }
 
+let particles = [];
+class Particle {
+  constructor(x, y, size, color) {
+    this.size = size;
+    this.x = x + this.size / 2 + Math.random() * 50 - 25;
+    this.y = y + this.size / 3 + Math.random() * 50 - 25;
+    this.radius = (Math.random() * this.size) / 10;
+    this.maxRadius = Math.random() * 20 + 35;
+    this.markedForDeletion = false;
+    this.speedX = Math.random() * 1 + 0.5;
+    this.color = color;
+  }
+
+  update() {
+    this.x += this.speedX;
+    this.radius += 0.8;
+    if (this.radius > this.maxRadius - 5) this.markedForDeletion = true;
+  }
+  draw() {
+    ctx.save();
+    ctx.globalAlpha = 1 - this.radius / this.maxRadius;
+    ctx.beginPath();
+    ctx.fillStyle = this.color;
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+}
+
 function drawScore() {
   ctx.fillStyle = "black";
   ctx.fillText(`Score: ${score}`, SCORE_TEXT_OFFSET_X, SCORE_TEXT_OFFSET_Y);
@@ -176,6 +214,22 @@ function handleClick(e) {
   });
 }
 
+function drawGameOver() {
+  ctx.textAlign = "centre";
+  ctx.fillStyle = "black";
+  ctx.fillText(
+    `GAME OVER, your score is ${score}`,
+    canvas.width / 2,
+    canvas.height / 2
+  );
+  ctx.fillStyle = "white";
+  ctx.fillText(
+    `GAME OVER, your score is ${score}`,
+    canvas.width / 2 + 5,
+    canvas.height / 2 + 5
+  );
+}
+
 function animate(timestamp = 0) {
   const deltaTime = timestamp - lastTimestamp;
   lastTimestamp = timestamp;
@@ -191,13 +245,17 @@ function animate(timestamp = 0) {
   }
 
   drawScore();
-  [...ravens, ...explosions].forEach((obj) => obj.update(deltaTime));
-  [...ravens, ...explosions].forEach((obj) => obj.draw());
+  [...particles, ...ravens, ...explosions].forEach((obj) =>
+    obj.update(deltaTime)
+  );
+  [...particles, ...ravens, ...explosions].forEach((obj) => obj.draw());
 
   ravens = ravens.filter((raven) => !raven.markedForDeletion);
   explosions = explosions.filter((explosion) => !explosion.markedForDeletion);
+  particles = particles.filter((obj) => !obj.markedForDeletion);
 
-  requestAnimationFrame(animate);
+  if (!gameOver) requestAnimationFrame(animate);
+  else drawGameOver();
 }
 
 window.addEventListener("click", handleClick);
