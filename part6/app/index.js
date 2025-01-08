@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
       this.enemies = [];
       this.enemyInterval = 1000;
       this.enemyTimer = 0;
-      this.enemyTypes = ["worm", "ghost", "spider"];
+      this.enemyTypes = ["ghost", "spider"];
     }
     update(deltaTime) {
       this.enemies = this.enemies.filter((obj) => !obj.markedForDeletion);
@@ -34,9 +34,8 @@ document.addEventListener("DOMContentLoaded", () => {
     #addNewEnemy() {
       const randomEnemy =
         this.enemyTypes[Math.floor(Math.random() * this.enemyTypes.length)];
-      if (randomEnemy === "worm") this.enemies.push(new Worm(this));
-      else if (randomEnemy === "ghost") this.enemies.push(new Ghost(this));
-      else if (randomEnemy === "spider") this.enemies.push(new Spider(this));
+      if (randomEnemy === "ghost") this.enemies.push(new Ghost(this));
+      if (randomEnemy === "spider") this.enemies.push(new Spider(this));
     }
   }
 
@@ -75,20 +74,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  class Worm extends Enemy {
-    constructor(game) {
-      super(game);
-      this.spriteWidth = 229;
-      this.spriteHeight = 171;
-      this.width = this.spriteWidth / 2;
-      this.height = this.spriteHeight / 2;
-      this.x = this.game.width;
-      this.y = this.game.height - this.height;
-      this.image = wormImage;
-      this.vx = Math.random() * 0.1 + 0.1;
-    }
-  }
-
   class Ghost extends Enemy {
     constructor(game) {
       super(game);
@@ -97,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
       this.width = this.spriteWidth / 2;
       this.height = this.spriteHeight / 2;
       this.x = this.game.width;
-      this.y = Math.random() * (this.game.height - this.height * 2);
+      this.y = Math.random() * (this.game.height - this.height);
       this.image = ghostImage;
       this.vx = Math.random() * 0.2 + 0.1;
       this.angle = 0;
