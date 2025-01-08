@@ -15,7 +15,7 @@ class Explosion {
     this.height = this.spriteHeight * this.scale;
     this.x = x;
     this.y = y;
-    this.image = Explosion.loadImage("../img/boom.png");
+    this.image = Explosion.loadImage("/img/boom.png");
     this.frame = 0;
     this.timer = 0;
     this.angle = Math.random() * Math.PI * 2;
@@ -68,12 +68,11 @@ class Explosion {
 }
 
 function createAnimation(e) {
-    const canvasPosition = canvas.getBoundingClientRect();
-    const positionX = e.x - canvasPosition.left;
-    const positionY = e.y - canvasPosition.top;
-    explosions.push(new Explosion(positionX, positionY));
-  }
-  
+  const canvasPosition = canvas.getBoundingClientRect();
+  const positionX = e.x - canvasPosition.left;
+  const positionY = e.y - canvasPosition.top;
+  explosions.push(new Explosion(positionX, positionY));
+}
 
 function animate() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);

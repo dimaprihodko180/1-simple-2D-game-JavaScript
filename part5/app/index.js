@@ -56,7 +56,7 @@ class Raven {
     this.markedForDeletion = false;
 
     this.image = new Image();
-    this.image.src = "../img/raven.png";
+    this.image.src = "/img/raven.png";
 
     this.frame = 0;
     this.maxFrame = 4;
@@ -118,7 +118,7 @@ class Raven {
 class Explosion {
   constructor(x, y, size) {
     this.image = new Image();
-    this.image.src = "../img/boom.png";
+    this.image.src = "/img/boom.png";
     this.spriteWidth = 200 / 2;
     this.spriteHeight = 179 / 2;
     this.x = x;
