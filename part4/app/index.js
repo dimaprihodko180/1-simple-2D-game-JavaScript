@@ -6,6 +6,18 @@ canvas.height = 700;
 
 let explosions = [];
 
+function loadImage(src) {
+  const img = new Image();
+  img.src = src;
+  return img;
+}
+
+function loadSound(src) {
+  const audio = new Audio();
+  audio.src = src;
+  return audio;
+}
+
 class Explosion {
   constructor(x, y) {
     this.spriteWidth = 100;
@@ -15,23 +27,11 @@ class Explosion {
     this.height = this.spriteHeight * this.scale;
     this.x = x;
     this.y = y;
-    this.image = Explosion.loadImage("/img/boom.png");
+    this.image = loadImage("/img/boom.png");
     this.frame = 0;
     this.timer = 0;
     this.angle = Math.random() * Math.PI * 2;
-    this.sound = Explosion.loadSound("../audio/boom.wav");
-  }
-
-  static loadImage(src) {
-    const img = new Image();
-    img.src = src;
-    return img;
-  }
-
-  static loadSound(src) {
-    const audio = new Audio();
-    audio.src = src;
-    return audio;
+    this.sound = loadSound("../audio/boom.wav");
   }
 
   update() {

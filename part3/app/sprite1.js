@@ -1,5 +1,3 @@
-// ПОДКЛЮЧЕНИЕ HTML - КОНТЕКСТА И ОБЪЯВЛЕНИЕ ВАЖНЫХ ПЕРЕМЕННЫХ
-//-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 /**@type {HTMLCanvasElement} */
 const canvas = document.getElementById("canvas-1");
 const ctx = canvas.getContext("2d");
@@ -7,12 +5,8 @@ CANVAS_WIDTH = canvas.width = 500;
 CANVAS_HEIGHT = canvas.height = 2 * CANVAS_WIDTH;
 const numberOfEnemies = 100;
 const storageOfEnemies = [];
-// ПОДКЛЮЧЕНИЕ ИЗОБРАЖЕНИЙ
-//-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 
 let gameFrame = 0;
-// СОЗДАНИЕ КЛАССА "БОТ"
-//-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 class Enemy {
   constructor() {
     this.enemyImage = new Image();
@@ -56,8 +50,6 @@ class Enemy {
   }
 }
 
-// СОЗДАНИЕ АНИМАЦИИ
-//-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 for (let i = 0; i < numberOfEnemies; i++) {
   storageOfEnemies.push(new Enemy());
 }
@@ -71,6 +63,4 @@ function animate() {
   requestAnimationFrame(animate);
 }
 
-// ЗАПУСК АНИМАЦИИ
-//-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 animate();
