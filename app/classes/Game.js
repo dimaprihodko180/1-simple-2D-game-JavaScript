@@ -1,14 +1,16 @@
 import { Player } from "./Player.js";
+import { InputHandler } from "./InputHandler.js";
 
 export class Game {
   constructor(width, height) {
     this.width = width;
     this.height = height;
     this.player = this.#initPlayer(this);
+    this.input = this.#initInputHandller();
   }
 
   update() {
-    this.player.update();
+    this.player.update(this.input.arrayOfKeys);
   }
 
   draw(context) {
@@ -17,5 +19,9 @@ export class Game {
 
   #initPlayer(gameObject) {
     return new Player(gameObject);
+  }
+
+  #initInputHandller() {
+    return new InputHandler();
   }
 }

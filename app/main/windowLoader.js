@@ -1,4 +1,4 @@
-import { CANVAS_ENUMS } from "../constants/canvans.js";
+import { CANVAS_ENUMS } from "../enums/canvans.js";
 import { Game } from "../classes/Game.js";
 
 export function windowLoader() {
