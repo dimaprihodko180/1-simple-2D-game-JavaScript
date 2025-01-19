@@ -1,6 +1,8 @@
 /**@type {HTMLCanvasElement} */
-import { imageOfPlayer } from "../enums and constants/images.js";
 import { KEYS } from "../enums and constants/keys.js";
+import { imageOfPlayer } from "../enums and constants/images.js";
+import { StateSitting } from "./StateSitting.js";
+import { StateRunning } from "./StateRunning.js";
 
 export class Player {
   #game;
@@ -17,13 +19,20 @@ export class Player {
   #height = 91.3;
   #image = imageOfPlayer;
 
+  #state = [new StateSitting(this), new StateRunning(this)];
+  #currentState = this.#state[0];
+
   constructor(game) {
     this.#game = game;
     this.#x = 0;
     this.#y = this.#game.height - this.#height;
+    this.#currentState.enter();
+    this.frameX = 0;
+    this.frameY = 0;
   }
 
   update(input) {
+    this.#currentState.handlerInput(input);
     this.#horizontalMovement(input);
     this.#verticalMovement(input);
   }
@@ -31,8 +40,8 @@ export class Player {
   draw(context) {
     context.drawImage(
       this.#image,
-      0,
-      0,
+      this.frameX * this.#width,
+      this.frameY * this.#height,
       this.#width,
       this.#height,
       this.#x,
@@ -40,6 +49,11 @@ export class Player {
       this.#width,
       this.#height
     );
+  }
+
+  setState(state) {
+    this.#currentState = this.#state[state];
+    this.#currentState.enter();
   }
 
   #horizontalMovement(input) {
