@@ -1,4 +1,4 @@
-import { KEYS_ENUMS } from "../enums/keys.js";
+import { KEYS } from "../enums and constants/keys.js";
 
 export class InputHandler {
   #keys = [];
@@ -12,11 +12,11 @@ export class InputHandler {
 
   #initButtonCondition(event) {
     return (
-      KEYS_ENUMS.KEY_ARROW_DOWN.includes(event) ||
-      KEYS_ENUMS.KEY_ARROW_UP.includes(event) ||
-      KEYS_ENUMS.KEY_ARROW_RIGHT.includes(event) ||
-      KEYS_ENUMS.KEY_ARROW_LEFT.includes(event) ||
-      KEYS_ENUMS.ANOTHERS_KEYS.includes(event)
+      KEYS.KEY_ARROW_DOWN.includes(event) ||
+      KEYS.KEY_ARROW_UP.includes(event) ||
+      KEYS.KEY_ARROW_RIGHT.includes(event) ||
+      KEYS.KEY_ARROW_LEFT.includes(event) ||
+      KEYS.ANOTHERS_KEYS.includes(event)
     );
   }
 

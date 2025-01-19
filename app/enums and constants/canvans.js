@@ -2,11 +2,10 @@
 
 const size = 500;
 const canvas = document.getElementById("canvas-1");
-const ctx = canvas.getContext("2d");
 
-export const CANVAS_ENUMS = {
+export const CANVAS = {
   CANVAS: canvas,
-  CTX: ctx,
+  CTX: canvas.getContext("2d"),
   WIDTH: (canvas.width = size),
   HEIGHT: (canvas.height = size),
 };

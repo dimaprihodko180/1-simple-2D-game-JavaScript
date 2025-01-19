@@ -1,6 +1,6 @@
 /**@type {HTMLCanvasElement} */
-import { imageOfPlayer } from "../enums/images.js";
-import { KEYS_ENUMS } from "../enums/keys.js";
+import { imageOfPlayer } from "../enums and constants/images.js";
+import { KEYS } from "../enums and constants/keys.js";
 
 export class Player {
   #game;
@@ -44,9 +44,9 @@ export class Player {
 
   #horizontalMovement(input) {
     this.#x += this.#speed;
-    if (KEYS_ENUMS.KEY_ARROW_RIGHT.some((key) => input.includes(key)))
+    if (KEYS.KEY_ARROW_RIGHT.some((key) => input.includes(key)))
       this.#speed = this.#maxSpeed;
-    else if (KEYS_ENUMS.KEY_ARROW_LEFT.some((key) => input.includes(key)))
+    else if (KEYS.KEY_ARROW_LEFT.some((key) => input.includes(key)))
       this.#speed = -this.#maxSpeed;
     else this.#speed = 0;
     this.#restrictionHorizontalMovemen();
@@ -60,7 +60,7 @@ export class Player {
 
   #verticalMovement(input) {
     if (
-      KEYS_ENUMS.KEY_ARROW_UP.some((key) => input.includes(key)) &&
+      KEYS.KEY_ARROW_UP.some((key) => input.includes(key)) &&
       this.#restrictionVerticalMovemen()
     )
       this.#vy -= 30;

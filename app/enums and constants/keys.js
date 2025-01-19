@@ -1,4 +1,4 @@
-export const KEYS_ENUMS = {
+export const KEYS = {
   KEY_ARROW_UP: ["ArrowUp", "w", "ц"],
   KEY_ARROW_DOWN: ["ArrowDown", "s", "ы"],
   KEY_ARROW_RIGHT: ["ArrowRight", "d", "в"],
