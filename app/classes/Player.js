@@ -4,13 +4,18 @@ import { KEYS_ENUMS } from "../enums/keys.js";
 
 export class Player {
   #game;
+
   #x;
+  #speed = 0;
+  #maxSpeed = 10;
+
   #y;
+  #vy = 0;
+  #weight = 1;
+
   #width = 100;
   #height = 91.3;
   #image = imageOfPlayer;
-  #speed = 0;
-  #maxSpeed = 10;
 
   constructor(game) {
     this.#game = game;
@@ -20,6 +25,7 @@ export class Player {
 
   update(input) {
     this.#horizontalMovement(input);
+    this.#verticalMovement(input);
   }
 
   draw(context) {
@@ -50,5 +56,20 @@ export class Player {
     if (this.#x < 0) this.#x = 0;
     if (this.#x > this.#game.width - this.#width)
       this.#x = this.#game.width - this.#width;
+  }
+
+  #verticalMovement(input) {
+    if (
+      KEYS_ENUMS.KEY_ARROW_UP.some((key) => input.includes(key)) &&
+      this.#restrictionVerticalMovemen()
+    )
+      this.#vy -= 30;
+    this.#y += this.#vy;
+    if (!this.#restrictionVerticalMovemen()) this.#vy += this.#weight;
+    else this.#vy = 0;
+  }
+
+  #restrictionVerticalMovemen() {
+    return this.#y >= this.#game.height - this.#height;
   }
 }
