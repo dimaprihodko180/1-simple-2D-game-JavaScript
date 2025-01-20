@@ -2,10 +2,10 @@ import { CANVAS } from "../enums and constants/canvans.js";
 import { Game } from "../classes/Game.js";
 
 export function windowLoader() {
-  window.addEventListener("DOMContentLoaded", () => {
+  window.addEventListener("load", () => {
     const game = new Game(CANVAS.WIDTH, CANVAS.HEIGHT);
-    console.log(game);
     let lastTime = 0;
+
     function animate(timeStamp) {
       const deltaTime = timeStamp - lastTime;
       lastTime = timeStamp;
@@ -14,6 +14,6 @@ export function windowLoader() {
       game.draw(CANVAS.CTX);
       requestAnimationFrame(animate);
     }
-    animate();
+    animate(0);
   });
 }

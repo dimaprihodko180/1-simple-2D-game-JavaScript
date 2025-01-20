@@ -19,25 +19,26 @@ export class Player {
   #height = 91.3;
   #image = imageOfPlayer;
 
-  #state = [
-    new StateSitting(this),
-    new StateRunning(this),
-    new StateJumping(this),
-    new StateFalling(this),
-  ];
+  #state;
 
   constructor(game) {
     this.#game = game;
     this.#x = 0;
-    this.#y = this.#game.height - this.#height;
+    this.#y = this.#game.height - this.#height - this.#game.groundMargin;
     this.frameX = 0;
     this.frameY = 0;
     this.maxFrame;
     this.vy = 0;
     this.weight = 1;
-    this.fps = 20;
+    this.fps = 60;
     this.frameInterval = 1000 / this.fps;
     this.frameTimer = 0;
+    this.#state = [
+      new StateSitting(this),
+      new StateRunning(this),
+      new StateJumping(this),
+      new StateFalling(this),
+    ];
     this.currentState = this.#state[0];
     this.currentState.enter();
   }
@@ -84,14 +85,16 @@ export class Player {
       this.#x = this.#game.width - this.#width;
   }
 
-  #verticalMovement(input) {
+  #verticalMovement() {
     this.#y += this.vy;
     if (!this.#restrictionVerticalMovemen()) this.vy += this.weight;
     else this.vy = 0;
   }
 
   #restrictionVerticalMovemen() {
-    return this.#y >= this.#game.height - this.#height;
+    return (
+      this.#y >= this.#game.height - this.#height - this.#game.groundMargin
+    );
   }
 
   #spriteAnimation(deltaTime) {

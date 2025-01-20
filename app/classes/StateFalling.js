@@ -12,7 +12,7 @@ export class StateFalling extends State {
     this.player.frameY = 2;
   }
 
-  handlerInput(input) {
+  handlerInput() {
     if (this.player.onGround()) {
       this.player.setState(this.states.RUNNING);
     }
