@@ -1,22 +1,21 @@
 import { State } from "./base/State.js";
 
 export class StateJumping extends State {
-  #player;
   constructor(player) {
     super(2);
-    this.#player = player;
+    this.player = player;
   }
 
   enter() {
-    this.#player.frameY = 5;
+    if (this.player.onGround()) this.player.vy = -27;
+    this.player.frameX = 0;
+    this.player.maxFrame = 6;
+    this.player.frameY = 1;
   }
 
   handlerInput(input) {
-    if (
-      this.keys.KEY_ARROW_LEFT.some((key) => input.includes(key)) ||
-      this.keys.KEY_ARROW_RIGHT.some((key) => input.includes(key))
-    ) {
-      this.#player.setState(this.states.JUMPING);
+    if (this.player.vy > this.player.weight) {
+      this.player.setState(this.states.FALLING);
     }
   }
 }

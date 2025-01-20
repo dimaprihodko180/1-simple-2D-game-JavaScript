@@ -5,9 +5,12 @@ export function windowLoader() {
   window.addEventListener("DOMContentLoaded", () => {
     const game = new Game(CANVAS.WIDTH, CANVAS.HEIGHT);
     console.log(game);
-    function animate() {
+    let lastTime = 0;
+    function animate(timeStamp) {
+      const deltaTime = timeStamp - lastTime;
+      lastTime = timeStamp;
       CANVAS.CTX.clearRect(0, 0, CANVAS.WIDTH, CANVAS.HEIGHT);
-      game.update();
+      game.update(deltaTime);
       game.draw(CANVAS.CTX);
       requestAnimationFrame(animate);
     }

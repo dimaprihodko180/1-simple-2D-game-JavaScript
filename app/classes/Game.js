@@ -9,8 +9,8 @@ export class Game {
     this.input = this.#initInputHandller();
   }
 
-  update() {
-    this.player.update(this.input.arrayOfKeys);
+  update(deltaTime) {
+    this.player.update(this.input.arrayOfKeys, deltaTime);
   }
 
   draw(context) {

@@ -3,6 +3,8 @@ import { KEYS } from "../enums and constants/keys.js";
 import { imageOfPlayer } from "../enums and constants/images.js";
 import { StateSitting } from "./StateSitting.js";
 import { StateRunning } from "./StateRunning.js";
+import { StateJumping } from "./StateJumping.js";
+import { StateFalling } from "./StateFalling.js";
 
 export class Player {
   #game;
@@ -12,29 +14,39 @@ export class Player {
   #maxSpeed = 10;
 
   #y;
-  #vy = 0;
-  #weight = 1;
 
   #width = 100;
   #height = 91.3;
   #image = imageOfPlayer;
 
-  #state = [new StateSitting(this), new StateRunning(this)];
-  #currentState = this.#state[0];
+  #state = [
+    new StateSitting(this),
+    new StateRunning(this),
+    new StateJumping(this),
+    new StateFalling(this),
+  ];
 
   constructor(game) {
     this.#game = game;
     this.#x = 0;
     this.#y = this.#game.height - this.#height;
-    this.#currentState.enter();
     this.frameX = 0;
     this.frameY = 0;
+    this.maxFrame;
+    this.vy = 0;
+    this.weight = 1;
+    this.fps = 20;
+    this.frameInterval = 1000 / this.fps;
+    this.frameTimer = 0;
+    this.currentState = this.#state[0];
+    this.currentState.enter();
   }
 
-  update(input) {
-    this.#currentState.handlerInput(input);
+  update(input, deltaTime) {
+    this.currentState.handlerInput(input);
     this.#horizontalMovement(input);
     this.#verticalMovement(input);
+    this.#spriteAnimation(deltaTime);
   }
 
   draw(context) {
@@ -52,8 +64,8 @@ export class Player {
   }
 
   setState(state) {
-    this.#currentState = this.#state[state];
-    this.#currentState.enter();
+    this.currentState = this.#state[state];
+    this.currentState.enter();
   }
 
   #horizontalMovement(input) {
@@ -73,17 +85,24 @@ export class Player {
   }
 
   #verticalMovement(input) {
-    if (
-      KEYS.KEY_ARROW_UP.some((key) => input.includes(key)) &&
-      this.#restrictionVerticalMovemen()
-    )
-      this.#vy -= 30;
-    this.#y += this.#vy;
-    if (!this.#restrictionVerticalMovemen()) this.#vy += this.#weight;
-    else this.#vy = 0;
+    this.#y += this.vy;
+    if (!this.#restrictionVerticalMovemen()) this.vy += this.weight;
+    else this.vy = 0;
   }
 
   #restrictionVerticalMovemen() {
     return this.#y >= this.#game.height - this.#height;
+  }
+
+  #spriteAnimation(deltaTime) {
+    if (this.frameTimer > this.frameInterval) {
+      this.frameTimer = 0;
+      if (this.frameX < this.maxFrame) this.frameX++;
+      else this.frameX = 0;
+    } else this.frameTimer += deltaTime;
+  }
+
+  onGround() {
+    return this.#restrictionVerticalMovemen();
   }
 }
