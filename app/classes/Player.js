@@ -1,10 +1,10 @@
 /**@type {HTMLCanvasElement} */
 import { KEYS } from "../enums and constants/keys.js";
-import { imageOfPlayer } from "../enums and constants/images.js";
-import { StateSitting } from "./StateSitting.js";
-import { StateRunning } from "./StateRunning.js";
-import { StateJumping } from "./StateJumping.js";
-import { StateFalling } from "./StateFalling.js";
+import { imageOfPlayer } from "../images.js";
+import { StateSitting } from "./States/StateSitting.js";
+import { StateRunning } from "./States/StateRunning.js";
+import { StateJumping } from "./States/StateJumping.js";
+import { StateFalling } from "./States/StateFalling.js";
 
 export class Player {
   #game;

@@ -1,4 +1,4 @@
-import { State } from "./base/State.js";
+import { State } from "../base/State.js";
 
 export class StateRunning extends State {
   constructor(player) {

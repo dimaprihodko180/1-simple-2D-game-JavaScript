@@ -1,4 +1,4 @@
-import { State } from "./base/State.js";
+import { State } from "../base/State.js";
 
 export class StateSitting extends State {
   constructor(player) {
@@ -11,7 +11,6 @@ export class StateSitting extends State {
     this.player.maxFrame = 4;
     this.player.frameY = 5;
   }
-
   handlerInput(input) {
     if (
       this.keys.KEY_ARROW_LEFT.some((key) => input.includes(key)) ||
