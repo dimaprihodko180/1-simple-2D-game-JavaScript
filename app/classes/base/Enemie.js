@@ -10,6 +10,7 @@ export class Enemie {
 
   update(deltaTime) {
     this.#movement(deltaTime);
+    this.#checkEnemyInScreen();
   }
 
   draw(context) {
