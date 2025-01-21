@@ -14,7 +14,7 @@ export class StateFalling extends State {
 
   handlerInput() {
     if (this.player.onGround()) {
-      this.player.setState(this.states.RUNNING);
+      this.player.setState(this.states.RUNNING, 1);
     }
   }
 }

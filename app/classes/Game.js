@@ -7,7 +7,8 @@ export class Game {
     this.width = width;
     this.height = height;
     this.groundMargin = 80;
-    this.speed = 3;
+    this.speed = 0;
+    this.maxSpeed = 6;
     this.background = this.#initBackground(this);
     this.player = this.#initPlayer(this);
     this.input = this.#initInputHandller();

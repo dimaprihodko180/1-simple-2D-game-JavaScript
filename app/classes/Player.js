@@ -64,8 +64,9 @@ export class Player {
     );
   }
 
-  setState(state) {
+  setState(state, speed) {
     this.currentState = this.#state[state];
+    this.#game.speed = this.#game.maxSpeed * speed;
     this.currentState.enter();
   }
 
