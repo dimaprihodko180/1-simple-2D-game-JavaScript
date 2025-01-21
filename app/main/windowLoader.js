@@ -2,7 +2,7 @@ import { CANVAS } from "../enums and constants/canvans.js";
 import { Game } from "../classes/Game.js";
 
 export function windowLoader() {
-  window.addEventListener("load", () => {
+  window.addEventListener("DOMContentLoaded", () => {
     const game = new Game(CANVAS.WIDTH, CANVAS.HEIGHT);
     let lastTime = 0;
 

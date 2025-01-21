@@ -15,3 +15,12 @@ layer4.src = "../img/backgroundLayers/layer-4.png";
 
 export const layer5 = new Image();
 layer5.src = "../img/backgroundLayers/layer-5.png";
+
+export const enemyFly = new Image();
+enemyFly.src = "../img/enemy_fly.png";
+
+export const enemyPlant = new Image();
+enemyPlant.src = "../img/enemy_plant.png";
+
+export const enemyBigSpider = new Image();
+enemyBigSpider.src = "../img/enemy_spider_big.png";
