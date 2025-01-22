@@ -4,6 +4,7 @@ import { Background } from "../background/Background.js";
 import { Flying } from "./Enemies/Flying.js";
 import { Climbing } from "./Enemies/Climbing.js";
 import { Ground } from "./Enemies/Ground.js";
+import { UI } from "./UI.js";
 
 export class Game {
   constructor(width, height) {
@@ -15,10 +16,13 @@ export class Game {
     this.background = this.#initBackground(this);
     this.player = this.#initPlayer(this);
     this.input = this.#initInputHandller(this);
+    this.UI = new UI(this);
     this.enemies = [];
     this.enemyTimer = 0;
     this.enemyInterval = 1000;
     this.debug = true;
+    this.score = 0;
+    this.fontColor = "black";
   }
 
   update(deltaTime) {
@@ -31,6 +35,7 @@ export class Game {
     this.background.draw(context);
     this.player.draw(context);
     this.enemies.forEach((enemy) => enemy.draw(context));
+    this.UI.draw(context);
   }
 
   addEnemy() {
@@ -39,18 +44,6 @@ export class Game {
     else if (this.speed > 0) this.enemies.push(new Climbing(this));
 
     this.enemies.push(new Flying(this));
-  }
-
-  #initPlayer(playerObject) {
-    return new Player(playerObject);
-  }
-
-  #initInputHandller(inputObject) {
-    return new InputHandler(inputObject);
-  }
-
-  #initBackground(backgroundObject) {
-    return new Background(backgroundObject);
   }
 
   #handleEnemies(deltaTime) {
@@ -65,5 +58,21 @@ export class Game {
       if (enemy.markedForDeletion)
         this.enemies.splice(this.enemies.indexOf(enemy), 1);
     });
+  }
+
+  #initPlayer(playerObject) {
+    return new Player(playerObject);
+  }
+
+  #initInputHandller(inputObject) {
+    return new InputHandler(inputObject);
+  }
+
+  #initBackground(backgroundObject) {
+    return new Background(backgroundObject);
+  }
+
+  #initUI(uiObject) {
+    return new UI(uiObject);
   }
 }
