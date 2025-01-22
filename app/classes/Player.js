@@ -41,9 +41,11 @@ export class Player {
     ];
     this.currentState = this.#state[0];
     this.currentState.enter();
+    this.score = 0;
   }
 
   update(input, deltaTime) {
+    this.#checkCollision();
     this.currentState.handlerInput(input);
     this.#horizontalMovement(input);
     this.#verticalMovement(input);
@@ -110,5 +112,20 @@ export class Player {
 
   onGround() {
     return this.#restrictionVerticalMovemen();
+  }
+
+  #checkCollision() {
+    this.#game.enemies.forEach((enemy) => {
+      if (
+        enemy.x < this.#x + this.#width &&
+        enemy.x + enemy.width > this.#x &&
+        enemy.y < this.#y + this.#height &&
+        enemy.y + enemy.height > this.#y
+      ) {
+        enemy.markedForDeletion = true;
+        this.#game.score++;
+      } else {
+      }
+    });
   }
 }
