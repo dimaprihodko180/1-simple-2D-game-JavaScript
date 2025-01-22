@@ -3,7 +3,8 @@ import { KEYS } from "../enums and constants/keys.js";
 export class InputHandler {
   #keys = [];
 
-  constructor() {
+  constructor(game) {
+    this.game = game;
     window.addEventListener("keydown", (e) =>
       this.#handleKeyEvent(e.key, true)
     );
@@ -24,7 +25,9 @@ export class InputHandler {
     if (this.#initButtonCondition(eventKey)) {
       if (isKeyDown && this.#keys.indexOf(eventKey) === -1) {
         this.#keys.push(eventKey);
-      } else if (!isKeyDown) {
+      } else if (isKeyDown && eventKey === "u")
+        this.game.debug = !this.game.debug;
+      else if (!isKeyDown) {
         const index = this.#keys.indexOf(eventKey);
         if (index !== -1) {
           this.#keys.splice(index, 1);

@@ -14,10 +14,11 @@ export class Game {
     this.maxSpeed = 6;
     this.background = this.#initBackground(this);
     this.player = this.#initPlayer(this);
-    this.input = this.#initInputHandller();
+    this.input = this.#initInputHandller(this);
     this.enemies = [];
     this.enemyTimer = 0;
     this.enemyInterval = 1000;
+    this.debug = true;
   }
 
   update(deltaTime) {
@@ -44,8 +45,8 @@ export class Game {
     return new Player(playerObject);
   }
 
-  #initInputHandller() {
-    return new InputHandler();
+  #initInputHandller(inputObject) {
+    return new InputHandler(inputObject);
   }
 
   #initBackground(backgroundObject) {
