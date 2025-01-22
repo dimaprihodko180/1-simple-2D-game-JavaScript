@@ -17,17 +17,19 @@ export class InputHandler {
       KEYS.KEY_ARROW_UP.includes(event) ||
       KEYS.KEY_ARROW_RIGHT.includes(event) ||
       KEYS.KEY_ARROW_LEFT.includes(event) ||
-      KEYS.ANOTHERS_KEYS.includes(event)
+      KEYS.ANOTHERS_KEYS.includes(event) ||
+      event === "u"
     );
   }
 
   #handleKeyEvent(eventKey, isKeyDown) {
     if (this.#initButtonCondition(eventKey)) {
-      if (isKeyDown && this.#keys.indexOf(eventKey) === -1) {
-        this.#keys.push(eventKey);
-      } else if (isKeyDown && eventKey === "u")
+      if (eventKey === "u" && isKeyDown) {
         this.game.debug = !this.game.debug;
-      else if (!isKeyDown) {
+        console.log(`Debug mode: ${this.game.debug}`);
+      } else if (isKeyDown && this.#keys.indexOf(eventKey) === -1) {
+        this.#keys.push(eventKey);
+      } else if (!isKeyDown) {
         const index = this.#keys.indexOf(eventKey);
         if (index !== -1) {
           this.#keys.splice(index, 1);
