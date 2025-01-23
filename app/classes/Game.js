@@ -16,25 +16,30 @@ export class Game {
     this.background = this.#initBackground(this);
     this.player = this.#initPlayer(this);
     this.input = this.#initInputHandller(this);
-    this.UI = new UI(this);
+    this.UI = this.#initUI(this);
     this.enemies = [];
+    this.particles = [];
     this.enemyTimer = 0;
     this.enemyInterval = 1000;
     this.debug = true;
     this.score = 0;
     this.fontColor = "black";
+    this.player.currentState = this.player.state[0];
+    this.player.currentState.enter();
   }
 
   update(deltaTime) {
     this.background.update();
     this.player.update(this.input.arrayOfKeys, deltaTime);
     this.#handleEnemies(deltaTime);
+    this.#effects();
   }
 
   draw(context) {
     this.background.draw(context);
     this.player.draw(context);
     this.enemies.forEach((enemy) => enemy.draw(context));
+    this.particles.forEach((particle) => particle.draw(context));
     this.UI.draw(context);
   }
 
@@ -74,5 +79,12 @@ export class Game {
 
   #initUI(uiObject) {
     return new UI(uiObject);
+  }
+
+  #effects() {
+    this.particles.forEach((particle, index) => {
+      particle.update();
+      if (particle.markedForDeletion) this.particles.splice(index, 1);
+    });
   }
 }

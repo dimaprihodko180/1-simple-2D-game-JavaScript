@@ -26,7 +26,6 @@ export class InputHandler {
     if (this.#initButtonCondition(eventKey)) {
       if (eventKey === "u" && isKeyDown) {
         this.game.debug = !this.game.debug;
-        console.log(`Debug mode: ${this.game.debug}`);
       } else if (isKeyDown && this.#keys.indexOf(eventKey) === -1) {
         this.#keys.push(eventKey);
       } else if (!isKeyDown) {
@@ -35,7 +34,6 @@ export class InputHandler {
           this.#keys.splice(index, 1);
         }
       }
-      console.log(`Key event: ${eventKey}, Keys: ${this.#keys}`);
     }
   }
 

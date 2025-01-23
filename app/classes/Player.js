@@ -10,8 +10,6 @@ import { StateDiving } from "./States/StateDiving.js";
 import { StateHit } from "./States/StateHit.js";
 
 export class Player {
-  #game;
-
   #x;
   #speed = 0;
   #maxSpeed = 10;
@@ -22,12 +20,10 @@ export class Player {
   #height = 91.3;
   #image = imageOfPlayer;
 
-  #state;
-
   constructor(game) {
-    this.#game = game;
+    this.game = game;
     this.#x = 0;
-    this.#y = this.#game.height - this.#height - this.#game.groundMargin;
+    this.#y = this.game.height - this.#height - this.game.groundMargin;
     this.frameX = 0;
     this.frameY = 0;
     this.maxFrame;
@@ -36,17 +32,15 @@ export class Player {
     this.fps = 60;
     this.frameInterval = 1000 / this.fps;
     this.frameTimer = 0;
-    this.#state = [
-      new StateSitting(this),
-      new StateRunning(this),
-      new StateJumping(this),
-      new StateFalling(this),
-      new StateRolling(this),
-      new StateDiving(this),
-      // new StateHit(this),
+    this.state = [
+      new StateSitting(this.game),
+      new StateRunning(this.game),
+      new StateJumping(this.game),
+      new StateFalling(this.game),
+      new StateRolling(this.game),
+      new StateDiving(this.game),
+      // new StateHit(this.game),
     ];
-    this.currentState = this.#state[0];
-    this.currentState.enter();
     this.score = 0;
   }
 
@@ -59,7 +53,7 @@ export class Player {
   }
 
   draw(context) {
-    if (this.#game.debug)
+    if (this.game.debug)
       context.strokeRect(this.#x, this.#y, this.#width, this.#height);
     context.drawImage(
       this.#image,
@@ -75,8 +69,8 @@ export class Player {
   }
 
   setState(state, speed) {
-    this.currentState = this.#state[state];
-    this.#game.speed = this.#game.maxSpeed * speed;
+    this.currentState = this.state[state];
+    this.game.speed = this.game.maxSpeed * speed;
     this.currentState.enter();
   }
 
@@ -92,8 +86,8 @@ export class Player {
 
   #restrictionHorizontalMovemen() {
     if (this.#x < 0) this.#x = 0;
-    if (this.#x > this.#game.width - this.#width)
-      this.#x = this.#game.width - this.#width;
+    if (this.#x > this.game.width - this.#width)
+      this.#x = this.game.width - this.#width;
   }
 
   #verticalMovement() {
@@ -103,9 +97,7 @@ export class Player {
   }
 
   #restrictionVerticalMovemen() {
-    return (
-      this.#y >= this.#game.height - this.#height - this.#game.groundMargin
-    );
+    return this.#y >= this.game.height - this.#height - this.game.groundMargin;
   }
 
   #spriteAnimation(deltaTime) {
@@ -121,7 +113,7 @@ export class Player {
   }
 
   #checkCollision() {
-    this.#game.enemies.forEach((enemy) => {
+    this.game.enemies.forEach((enemy) => {
       if (
         enemy.x < this.#x + this.#width &&
         enemy.x + enemy.width > this.#x &&
@@ -129,7 +121,7 @@ export class Player {
         enemy.y + enemy.height > this.#y
       ) {
         enemy.markedForDeletion = true;
-        this.#game.score++;
+        this.game.score++;
       } else {
       }
     });
