@@ -43,6 +43,7 @@ export class Player {
     this.currentState.handlerInput(input);
     this.horizontalMovement(input);
     this.verticalMovement(input);
+    this.verticalBounds();
     this.spriteAnimation(deltaTime);
   }
 
@@ -118,5 +119,11 @@ export class Player {
         this.game.score++;
       }
     });
+  }
+
+  verticalBounds() {
+    if (this.y > this.game.height - this.height - this.game.groundMargin) {
+      this.y = this.game.height - this.height - this.game.groundMargin;
+    }
   }
 }

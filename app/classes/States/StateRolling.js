@@ -36,6 +36,8 @@ export class StateRolling extends State {
       this.game.player.onGround()
     ) {
       this.game.player.vy -= 27;
+    } else if (this.keys.KEY_ARROW_DOWN.some((key) => input.includes(key))) {
+      this.game.player.setState(this.states.DIVING, 0);
     }
   }
 }

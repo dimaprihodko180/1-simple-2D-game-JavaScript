@@ -17,6 +17,8 @@ export class StateJumping extends State {
       this.game.player.setState(this.states.FALLING, 1);
     } else if (this.keys.ANOTHERS_KEYS.some((key) => input.includes(key))) {
       this.game.player.setState(this.states.ROLLING, 2);
+    } else if (this.keys.KEY_ARROW_DOWN.some((key) => input.includes(key))) {
+      this.game.player.setState(this.states.DIVING, 0);
     }
   }
 }

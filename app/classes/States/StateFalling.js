@@ -11,9 +11,11 @@ export class StateFalling extends State {
     this.game.player.frameY = 2;
   }
 
-  handlerInput() {
-    if (this.game.player.onGround()) {
+  handlerInput(input) {
+    if (this.game.player.onGround(input)) {
       this.game.player.setState(this.states.RUNNING, 1);
+    } else if (this.keys.KEY_ARROW_DOWN.some((key) => input.includes(key))) {
+      this.game.player.setState(this.states.DIVING, 0);
     }
   }
 }
