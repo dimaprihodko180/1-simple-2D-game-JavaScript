@@ -17,6 +17,8 @@ export class StateSitting extends State {
       this.keys.KEY_ARROW_RIGHT.some((key) => input.includes(key))
     ) {
       this.player.setState(this.states.RUNNING, 1);
+    } else if (input.includes("Enter")) {
+      this.player.setState(this.states.ROLLING, 2);
     }
   }
 }

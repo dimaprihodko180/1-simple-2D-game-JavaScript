@@ -16,6 +16,8 @@ export class StateJumping extends State {
   handlerInput() {
     if (this.player.vy > this.player.weight) {
       this.player.setState(this.states.FALLING, 1);
+    } else if (input.includes("Enter")) {
+      this.player.setState(this.states.ROLLING, 2);
     }
   }
 }

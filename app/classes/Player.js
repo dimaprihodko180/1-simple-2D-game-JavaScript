@@ -5,6 +5,9 @@ import { StateSitting } from "./States/StateSitting.js";
 import { StateRunning } from "./States/StateRunning.js";
 import { StateJumping } from "./States/StateJumping.js";
 import { StateFalling } from "./States/StateFalling.js";
+import { StateRolling } from "./States/StateRolling.js";
+import { StateDiving } from "./States/StateDiving.js";
+import { StateHit } from "./States/StateHit.js";
 
 export class Player {
   #game;
@@ -38,6 +41,9 @@ export class Player {
       new StateRunning(this),
       new StateJumping(this),
       new StateFalling(this),
+      new StateRolling(this),
+      new StateDiving(this),
+      // new StateHit(this),
     ];
     this.currentState = this.#state[0];
     this.currentState.enter();
