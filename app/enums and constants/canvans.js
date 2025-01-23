@@ -1,5 +1,3 @@
-/**@type {HTMLCanvasElement} */
-
 const size = 500;
 const canvas = document.getElementById("canvas-1");
 

@@ -24,3 +24,6 @@ enemyPlant.src = "../img/enemy_plant.png";
 
 export const enemyBigSpider = new Image();
 enemyBigSpider.src = "../img/enemy_spider_big.png";
+
+export const fire = new Image();
+fire.src = "../img/fire.png";

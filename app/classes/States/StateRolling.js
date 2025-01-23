@@ -1,4 +1,5 @@
 import { State } from "../base/State.js";
+import { Fire } from "../effects/Fire.js";
 
 export class StateRolling extends State {
   constructor(game) {
@@ -12,6 +13,13 @@ export class StateRolling extends State {
   }
 
   handlerInput(input) {
+    this.game.particles.unshift(
+      new Fire(
+        this.game,
+        this.game.player.x + this.game.player.width * 0.5,
+        this.game.player.y + this.game.player.height * 0.5
+      )
+    );
     if (
       !this.keys.ANOTHERS_KEYS.some((key) => input.includes(key)) &&
       this.game.player.onGround()

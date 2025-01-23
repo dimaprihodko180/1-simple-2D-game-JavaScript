@@ -21,6 +21,7 @@ export class Game {
     this.particles = [];
     this.enemyTimer = 0;
     this.enemyInterval = 1000;
+    this.maxParticles = 200;
     this.debug = true;
     this.score = 0;
     this.fontColor = "black";
@@ -33,6 +34,7 @@ export class Game {
     this.player.update(this.input.arrayOfKeys, deltaTime);
     this.#handleEnemies(deltaTime);
     this.#effects();
+    this.#clearArray();
   }
 
   draw(context) {
@@ -86,5 +88,10 @@ export class Game {
       particle.update();
       if (particle.markedForDeletion) this.particles.splice(index, 1);
     });
+  }
+
+  #clearArray() {
+    if (this.particles.length > this.maxParticles)
+      this.particles = this.particles.slice(0, this.maxParticles);
   }
 }

@@ -3,12 +3,15 @@ import { Particle } from "../base/Particle.js";
 export class Dust extends Particle {
   constructor(game, x, y) {
     super(game);
-    this.size = Math.random() * 10 + 10;
+    this.size = Math.random() * 10 + 15;
     this.x = x;
     this.y = y;
     this.speedX = Math.random();
     this.speedY = Math.random();
-    this.color = "black";
+
+    setInterval(() => {
+      this.color = `rgba(0, 0, 0, 0.2)`;
+    });
   }
 
   draw(context) {
