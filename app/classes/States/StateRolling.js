@@ -23,6 +23,13 @@ export class StateRolling extends State {
       !this.player.onGround()
     ) {
       this.player.setState(this.states.FALLING, 1);
+    } else if (
+      this.keys.ANOTHERS_KEYS.some((key) => input.includes(key)) &&
+      this.keys.KEY_ARROW_UP.some((key) => input.includes(key)) &&
+      this.player.onGround()
+    ) {
+      this.player.vy -= 27;
+      // this.player.setState(this.states.FALLING, 1);
     }
   }
 }
