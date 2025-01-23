@@ -13,10 +13,10 @@ export class StateJumping extends State {
     this.player.frameY = 1;
   }
 
-  handlerInput() {
+  handlerInput(input) {
     if (this.player.vy > this.player.weight) {
       this.player.setState(this.states.FALLING, 1);
-    } else if (input.includes("Enter")) {
+    } else if (this.keys.ANOTHERS_KEYS.some((key) => input.includes(key))) {
       this.player.setState(this.states.ROLLING, 2);
     }
   }

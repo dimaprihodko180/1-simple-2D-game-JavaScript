@@ -17,7 +17,7 @@ export class StateRunning extends State {
       this.player.setState(this.states.SITTING, 0);
     } else if (this.keys.KEY_ARROW_UP.some((key) => input.includes(key))) {
       this.player.setState(this.states.JUMPING, 1);
-    } else if (input.includes("Enter")) {
+    } else if (this.keys.ANOTHERS_KEYS.some((key) => input.includes(key))) {
       this.player.setState(this.states.ROLLING, 2);
     }
   }

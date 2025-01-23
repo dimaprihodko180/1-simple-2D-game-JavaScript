@@ -12,10 +12,16 @@ export class StateRolling extends State {
     this.player.frameY = 6;
   }
 
-  handlerInput() {
-    if (!input.includes("Enter") && this.player.onGround()) {
+  handlerInput(input) {
+    if (
+      !this.keys.ANOTHERS_KEYS.some((key) => input.includes(key)) &&
+      this.player.onGround()
+    ) {
       this.player.setState(this.states.RUNNING, 1);
-    } else if (!input.includes("Enter") && !this.player.onGround()) {
+    } else if (
+      !this.keys.ANOTHERS_KEYS.some((key) => input.includes(key)) &&
+      !this.player.onGround()
+    ) {
       this.player.setState(this.states.FALLING, 1);
     }
   }
