@@ -30,3 +30,6 @@ fire.src = "../img/fire.png";
 
 export const boom = new Image();
 boom.src = "../img/boom.png";
+
+export const lives = new Image();
+lives.src = "../img/lives.png";

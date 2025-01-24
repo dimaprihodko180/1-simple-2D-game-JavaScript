@@ -8,6 +8,7 @@ import { StateRolling } from "./States/StateRolling.js";
 import { StateDiving } from "./States/StateDiving.js";
 import { StateHIT } from "./States/StateHIT.js";
 import { CollisionAnimation } from "./CollisionAnimation.js";
+import { FloatingMessage } from "./FloatingMessage.js";
 
 export class Player {
   constructor(game) {
@@ -136,8 +137,19 @@ export class Player {
           this.currentState === this.state[5]
         ) {
           this.game.score++;
+          this.game.floatingMessages.push(
+            new FloatingMessage(
+              "+1",
+              enemy.x,
+              enemy.y,
+              Math.floor(Math.random() * 360),
+              50
+            )
+          );
         } else {
           this.setState(6, 0);
+          this.game.lives--;
+          if (this.game.lives <= 0) this.game.gameOver = true;
         }
       }
     });

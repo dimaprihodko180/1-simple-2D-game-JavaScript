@@ -20,6 +20,7 @@ export class Game {
     this.enemies = [];
     this.particles = [];
     this.collisions = [];
+    this.floatingMessages = [];
     this.enemyTimer = 0;
     this.enemyInterval = 1000;
     this.maxParticles = 200;
@@ -28,6 +29,7 @@ export class Game {
     this.fontColor = "black";
     this.time = 0;
     this.maxTime = 10000;
+    this.lives = 1;
     this.gameOver = false;
     this.player.currentState = this.player.state[0];
     this.player.currentState.enter();
@@ -41,8 +43,19 @@ export class Game {
     this.background.update();
     this.player.update(this.input.arrayOfKeys, deltaTime);
     this.#handleEnemies(deltaTime);
+    this.#handleMessage();
     this.#effects();
     this.#clearArray();
+    this.enemies = this.enemies.filter((enemy) => !enemy.markedForDeletion);
+    this.particles = this.particles.filter(
+      (particle) => !particle.markedForDeletion
+    );
+    this.collisions = this.collisions.filter(
+      (collision) => !collision.markedForDeletion
+    );
+    this.floatingMessages = this.floatingMessages.filter(
+      (floatingMessage) => !floatingMessage.markedForDeletion
+    );
   }
 
   draw(context) {
@@ -51,7 +64,9 @@ export class Game {
     this.enemies.forEach((enemy) => enemy.draw(context));
     this.particles.forEach((particle) => particle.draw(context));
     this.collisions.forEach((collision) => collision.draw(context));
-
+    this.floatingMessages.forEach((floatingMessage) =>
+      floatingMessage.draw(context)
+    );
     this.UI.draw(context);
   }
 
@@ -72,8 +87,8 @@ export class Game {
     }
     this.enemies.forEach((enemy) => {
       enemy.update(deltaTime);
-      if (enemy.markedForDeletion)
-        this.enemies.splice(this.enemies.indexOf(enemy), 1);
+      // if (enemy.markedForDeletion)
+      //   this.enemies.splice(this.enemies.indexOf(enemy), 1);
     });
   }
 
@@ -96,12 +111,23 @@ export class Game {
   #effects() {
     this.particles.forEach((particle, index) => {
       particle.update();
-      if (particle.markedForDeletion) this.particles.splice(index, 1);
     });
   }
 
   #clearArray() {
     if (this.particles.length > this.maxParticles)
       this.particles.length = this.maxParticles;
+  }
+
+  #handleMessage() {
+    this.floatingMessages.forEach((floatingMessage) =>
+      floatingMessage.update()
+    );
+  }
+
+  handleCollisionSPrites(deltaTime) {
+    this.collisions.forEach((collision, index) => {
+      collision.update(deltaTime);
+    });
   }
 }
