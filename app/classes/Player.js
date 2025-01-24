@@ -7,6 +7,7 @@ import { StateFalling } from "./States/StateFalling.js";
 import { StateRolling } from "./States/StateRolling.js";
 import { StateDiving } from "./States/StateDiving.js";
 import { StateHIT } from "./States/StateHIT.js";
+import { CollisionAnimation } from "./CollisionAnimation.js";
 
 export class Player {
   constructor(game) {
@@ -45,6 +46,7 @@ export class Player {
     this.verticalMovement(input);
     this.verticalBounds();
     this.spriteAnimation(deltaTime);
+    this.handleCollisionSPrites(deltaTime);
   }
 
   draw(context) {
@@ -71,9 +73,15 @@ export class Player {
 
   horizontalMovement(input) {
     this.x += this.speed;
-    if (KEYS.KEY_ARROW_RIGHT.some((key) => input.includes(key)))
+    if (
+      KEYS.KEY_ARROW_RIGHT.some((key) => input.includes(key)) &&
+      this.currentState !== this.state[6]
+    )
       this.speed = this.maxSpeed;
-    else if (KEYS.KEY_ARROW_LEFT.some((key) => input.includes(key)))
+    else if (
+      KEYS.KEY_ARROW_LEFT.some((key) => input.includes(key)) &&
+      this.currentState !== this.state[6]
+    )
       this.speed = -this.maxSpeed;
     else this.speed = 0;
     this.restrictionHorizontalMovement();
@@ -116,6 +124,13 @@ export class Player {
         enemy.y + enemy.height > this.y
       ) {
         enemy.markedForDeletion = true;
+        this.game.collisions.push(
+          new CollisionAnimation(
+            this.game,
+            enemy.x + enemy.width * 0.5,
+            enemy.y + enemy.height * 0.5
+          )
+        );
         if (
           this.currentState === this.state[4] ||
           this.currentState === this.state[5]
@@ -132,5 +147,12 @@ export class Player {
     if (this.y > this.game.height - this.height - this.game.groundMargin) {
       this.y = this.game.height - this.height - this.game.groundMargin;
     }
+  }
+
+  handleCollisionSPrites(deltaTime) {
+    this.game.collisions.forEach((collision, index) => {
+      collision.update(deltaTime);
+      if (collision.markedForDeletion) this.game.collisions.splice(index, 1);
+    });
   }
 }

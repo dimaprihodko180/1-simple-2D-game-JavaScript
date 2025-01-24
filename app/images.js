@@ -27,3 +27,6 @@ enemyBigSpider.src = "../img/enemy_spider_big.png";
 
 export const fire = new Image();
 fire.src = "../img/fire.png";
+
+export const boom = new Image();
+boom.src = "../img/boom.png";

@@ -12,7 +12,7 @@ export function windowLoader() {
       CANVAS.CTX.clearRect(0, 0, CANVAS.WIDTH, CANVAS.HEIGHT);
       game.update(deltaTime);
       game.draw(CANVAS.CTX);
-      requestAnimationFrame(animate);
+      if (!game.gameOver) requestAnimationFrame(animate);
     }
     animate(0);
   });

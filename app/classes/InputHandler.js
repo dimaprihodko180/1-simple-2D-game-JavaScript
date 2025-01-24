@@ -2,6 +2,7 @@ import { KEYS } from "../enums and constants/keys.js";
 
 export class InputHandler {
   #keys = [];
+  #uKeyHoldTimer = null;
 
   constructor(game) {
     this.game = game;
@@ -24,8 +25,17 @@ export class InputHandler {
 
   #handleKeyEvent(eventKey, isKeyDown) {
     if (this.#initButtonCondition(eventKey)) {
-      if (eventKey === "u" && isKeyDown) {
-        this.game.debug = !this.game.debug;
+      if (eventKey === "u") {
+        if (isKeyDown) {
+          if (!this.#uKeyHoldTimer) {
+            this.#uKeyHoldTimer = setTimeout(() => {
+              this.game.debug = !this.game.debug;
+            }, 3000);
+          }
+        } else {
+          clearTimeout(this.#uKeyHoldTimer);
+          this.#uKeyHoldTimer = null;
+        }
       } else if (isKeyDown && this.#keys.indexOf(eventKey) === -1) {
         this.#keys.push(eventKey);
       } else if (!isKeyDown) {

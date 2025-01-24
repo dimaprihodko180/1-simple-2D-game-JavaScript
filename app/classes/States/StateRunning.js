@@ -8,7 +8,7 @@ export class StateRunning extends State {
 
   enter() {
     this.game.player.frameX = 0;
-    this.game.player.maxFrame = 6;
+    this.game.player.maxFrame = 8;
     this.game.player.frameY = 3;
   }
 
