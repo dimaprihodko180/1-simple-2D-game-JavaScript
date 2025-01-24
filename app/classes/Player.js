@@ -1,5 +1,4 @@
 import { KEYS } from "../enums and constants/keys.js";
-import { imageOfPlayer } from "../images.js";
 import { StateSitting } from "./States/StateSitting.js";
 import { StateRunning } from "./States/StateRunning.js";
 import { StateJumping } from "./States/StateJumping.js";
@@ -9,6 +8,7 @@ import { StateDiving } from "./States/StateDiving.js";
 import { StateHIT } from "./States/StateHIT.js";
 import { CollisionAnimation } from "./CollisionAnimation.js";
 import { FloatingMessage } from "./FloatingMessage.js";
+import { FileManager } from "../links/FileManager.js";
 
 export class Player {
   constructor(game) {
@@ -17,7 +17,7 @@ export class Player {
     this.maxSpeed = 10;
     this.width = 100;
     this.height = 91.3;
-    this.image = imageOfPlayer;
+    this.image = new FileManager().images.imageOfPlayer;
     this.x = 0;
     this.y = this.game.height - this.height - this.game.groundMargin;
     this.frameX = 0;

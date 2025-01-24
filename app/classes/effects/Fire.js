@@ -1,10 +1,10 @@
 import { Particle } from "../base/Particle.js";
-import { fire } from "../../images.js";
+import { FileManager } from "../../links/FileManager.js";
 
 export class Fire extends Particle {
   constructor(game, x, y) {
     super(game);
-    this.image = fire;
+    this.image = new FileManager().images.fire;
     this.size = Math.random() * 100 + 50;
     this.x = x;
     this.y = y;

@@ -1,11 +1,11 @@
-import { lives } from "../images.js";
+import { FileManager } from "../links/FileManager.js";
 
 export class UI {
   constructor(game) {
     this.game = game;
     this.fontSize = 30;
     this.fontFamily = "Helvetica";
-    this.image = lives;
+    this.image = new FileManager().images.lives;
   }
   draw(context) {
     context.save();

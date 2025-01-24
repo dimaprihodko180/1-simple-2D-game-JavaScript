@@ -1,5 +1,5 @@
 import { Enemie } from "../base/Enemie.js";
-import { enemyBigSpider } from "../../images.js";
+import { FileManager } from "../../links/FileManager.js";
 
 export class Climbing extends Enemie {
   constructor(game) {
@@ -12,7 +12,7 @@ export class Climbing extends Enemie {
     this.speedX = 0;
     this.speedY = Math.random() > 0.5 ? 1 : -1;
     this.maxFrame = 5;
-    this.image = enemyBigSpider;
+    this.image = new FileManager().images.enemyBigSpider;
     this.markedForDeletion = false;
   }
 

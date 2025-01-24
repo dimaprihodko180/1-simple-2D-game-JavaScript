@@ -1,5 +1,5 @@
 import { Enemie } from "../base/Enemie.js";
-import { enemyFly } from "../../images.js";
+import { FileManager } from "../../links/FileManager.js";
 
 export class Flying extends Enemie {
   constructor(game) {
@@ -12,7 +12,7 @@ export class Flying extends Enemie {
     this.speedX = 2;
     this.speedY = 0;
     this.maxFrame = 5;
-    this.image = enemyFly;
+    this.image = new FileManager().images.enemyFly;
     this.angle = 0;
     this.va = Math.random() * 0.1 + 0.1;
   }

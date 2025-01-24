@@ -1,5 +1,5 @@
 import { Particle } from "../base/Particle.js";
-import { fire } from "../../images.js";
+import { FileManager } from "../../links/FileManager.js";
 
 export class Splash extends Particle {
   constructor(game, x, y) {
@@ -10,7 +10,7 @@ export class Splash extends Particle {
     this.speedX = Math.random() * 6 - 4;
     this.speedY = Math.random() * 2 + 2;
     this.gravity = 0;
-    this.image = fire;
+    this.image = new FileManager().images.fire;
   }
   update() {
     super.update();

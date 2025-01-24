@@ -1,9 +1,9 @@
-import { boom } from "../images.js";
+import { FileManager } from "../links/FileManager.js";
 
 export class CollisionAnimation {
   constructor(game, x, y) {
     this.game = game;
-    this.image = boom;
+    this.image = new FileManager().images.boom;
     this.spriteWidth = 100;
     this.spriteHeight = 90;
     this.sizeModifier = Math.random() + 0.5;
