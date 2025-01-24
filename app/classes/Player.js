@@ -6,7 +6,7 @@ import { StateJumping } from "./States/StateJumping.js";
 import { StateFalling } from "./States/StateFalling.js";
 import { StateRolling } from "./States/StateRolling.js";
 import { StateDiving } from "./States/StateDiving.js";
-import { StateHit } from "./States/StateHit.js";
+import { StateHIT } from "./States/StateHIT.js";
 
 export class Player {
   constructor(game) {
@@ -33,7 +33,7 @@ export class Player {
       new StateFalling(this.game),
       new StateRolling(this.game),
       new StateDiving(this.game),
-      // new StateHit(this.game),
+      new StateHIT(this.game),
     ];
     this.score = 0;
   }
@@ -116,7 +116,14 @@ export class Player {
         enemy.y + enemy.height > this.y
       ) {
         enemy.markedForDeletion = true;
-        this.game.score++;
+        if (
+          this.currentState === this.state[4] ||
+          this.currentState === this.state[5]
+        ) {
+          this.game.score++;
+        } else {
+          this.setState(6, 0);
+        }
       }
     });
   }
