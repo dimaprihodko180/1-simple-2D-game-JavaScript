@@ -6,46 +6,88 @@ import { Climbing } from "./Enemies/Climbing.js";
 import { Ground } from "./Enemies/Ground.js";
 import { UI } from "./UI.js";
 
+const GAME_CONSTANTS = {
+  GROUND_MARGIN: 80,
+  MAX_SPEED: 6,
+  ENEMY_INTERVAL: 1000,
+  MAX_PARTICLES: 200,
+  MAX_TIME: 10000,
+  FONT_COLOR: "black",
+  INITIAL_LIVES: 1,
+};
+
 export class Game {
   constructor(width, height) {
     this.width = width;
     this.height = height;
-    this.groundMargin = 80;
+    this.groundMargin = GAME_CONSTANTS.GROUND_MARGIN;
     this.speed = 0;
-    this.maxSpeed = 6;
-    this.background = this.#initBackground(this);
-    this.player = this.#initPlayer(this);
-    this.input = this.#initInputHandller(this);
-    this.UI = this.#initUI(this);
+    this.maxSpeed = GAME_CONSTANTS.MAX_SPEED;
+    this.background = this.initBackground();
+    this.player = this.initPlayer();
+    this.input = this.initInputHandler();
+    this.UI = this.initUI();
     this.enemies = [];
     this.particles = [];
     this.collisions = [];
     this.floatingMessages = [];
     this.enemyTimer = 0;
-    this.enemyInterval = 1000;
-    this.maxParticles = 200;
+    this.enemyInterval = GAME_CONSTANTS.ENEMY_INTERVAL;
+    this.maxParticles = GAME_CONSTANTS.MAX_PARTICLES;
     this.debug = false;
     this.score = 0;
-    this.fontColor = "black";
+    this.fontColor = GAME_CONSTANTS.FONT_COLOR;
     this.time = 0;
-    this.maxTime = 10000;
-    this.lives = 1;
+    this.maxTime = GAME_CONSTANTS.MAX_TIME;
+    this.lives = GAME_CONSTANTS.INITIAL_LIVES;
     this.gameOver = false;
     this.player.currentState = this.player.state[0];
     this.player.currentState.enter();
   }
 
   update(deltaTime) {
+    this.updateTime(deltaTime);
+    this.background.update();
+    this.player.update(this.input.arrayOfKeys, deltaTime);
+    this.updateEnemies(deltaTime);
+    this.updateMessages();
+    this.updateEffects();
+    this.clearParticles();
+    this.filterMarkedEntities();
+  }
+
+  updateTime(deltaTime) {
     this.time += deltaTime;
     if (this.time > this.maxTime) {
       this.gameOver = true;
     }
-    this.background.update();
-    this.player.update(this.input.arrayOfKeys, deltaTime);
-    this.#handleEnemies(deltaTime);
-    this.#handleMessage();
-    this.#effects();
-    this.#clearArray();
+  }
+
+  updateEnemies(deltaTime) {
+    if (this.enemyTimer > this.enemyInterval) {
+      this.addEnemy();
+      this.enemyTimer = 0;
+    } else {
+      this.enemyTimer += deltaTime;
+    }
+    this.enemies.forEach((enemy) => enemy.update(deltaTime));
+  }
+
+  updateMessages() {
+    this.floatingMessages.forEach((message) => message.update());
+  }
+
+  updateEffects() {
+    this.particles.forEach((particle) => particle.update());
+  }
+
+  clearParticles() {
+    if (this.particles.length > this.maxParticles) {
+      this.particles.length = this.maxParticles;
+    }
+  }
+
+  filterMarkedEntities() {
     this.enemies = this.enemies.filter((enemy) => !enemy.markedForDeletion);
     this.particles = this.particles.filter(
       (particle) => !particle.markedForDeletion
@@ -54,7 +96,7 @@ export class Game {
       (collision) => !collision.markedForDeletion
     );
     this.floatingMessages = this.floatingMessages.filter(
-      (floatingMessage) => !floatingMessage.markedForDeletion
+      (message) => !message.markedForDeletion
     );
   }
 
@@ -64,70 +106,32 @@ export class Game {
     this.enemies.forEach((enemy) => enemy.draw(context));
     this.particles.forEach((particle) => particle.draw(context));
     this.collisions.forEach((collision) => collision.draw(context));
-    this.floatingMessages.forEach((floatingMessage) =>
-      floatingMessage.draw(context)
-    );
+    this.floatingMessages.forEach((message) => message.draw(context));
     this.UI.draw(context);
   }
 
   addEnemy() {
-    if (this.speed > 0 && Math.random() < 0.5)
+    if (this.speed > 0 && Math.random() < 0.5) {
       this.enemies.push(new Ground(this));
-    else if (this.speed > 0) this.enemies.push(new Climbing(this));
-
+    } else if (this.speed > 0) {
+      this.enemies.push(new Climbing(this));
+    }
     this.enemies.push(new Flying(this));
   }
 
-  #handleEnemies(deltaTime) {
-    if (this.enemyTimer > this.enemyInterval) {
-      this.addEnemy();
-      this.enemyTimer = 0;
-    } else {
-      this.enemyTimer += deltaTime;
-    }
-    this.enemies.forEach((enemy) => {
-      enemy.update(deltaTime);
-      // if (enemy.markedForDeletion)
-      //   this.enemies.splice(this.enemies.indexOf(enemy), 1);
-    });
+  initPlayer() {
+    return new Player(this);
   }
 
-  #initPlayer(playerObject) {
-    return new Player(playerObject);
+  initInputHandler() {
+    return new InputHandler(this);
   }
 
-  #initInputHandller(inputObject) {
-    return new InputHandler(inputObject);
+  initBackground() {
+    return new Background(this);
   }
 
-  #initBackground(backgroundObject) {
-    return new Background(backgroundObject);
-  }
-
-  #initUI(uiObject) {
-    return new UI(uiObject);
-  }
-
-  #effects() {
-    this.particles.forEach((particle, index) => {
-      particle.update();
-    });
-  }
-
-  #clearArray() {
-    if (this.particles.length > this.maxParticles)
-      this.particles.length = this.maxParticles;
-  }
-
-  #handleMessage() {
-    this.floatingMessages.forEach((floatingMessage) =>
-      floatingMessage.update()
-    );
-  }
-
-  handleCollisionSPrites(deltaTime) {
-    this.collisions.forEach((collision, index) => {
-      collision.update(deltaTime);
-    });
+  initUI() {
+    return new UI(this);
   }
 }
