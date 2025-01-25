@@ -1,11 +1,17 @@
 import { KEYS } from "../enums and constants/keys.js";
 
+const INPUT_CONSTANTS = {
+  DEBUG_KEY: "u",
+  DEBUG_HOLD_TIME: 3000,
+};
+
 export class InputHandler {
   #keys = [];
   #uKeyHoldTimer = null;
 
   constructor(game) {
     this.game = game;
+
     window.addEventListener("keydown", (e) =>
       this.#handleKeyEvent(e.key, true)
     );
@@ -19,18 +25,18 @@ export class InputHandler {
       KEYS.KEY_ARROW_RIGHT.includes(event) ||
       KEYS.KEY_ARROW_LEFT.includes(event) ||
       KEYS.ANOTHERS_KEYS.includes(event) ||
-      event === "u"
+      event === INPUT_CONSTANTS.DEBUG_KEY
     );
   }
 
   #handleKeyEvent(eventKey, isKeyDown) {
     if (this.#initButtonCondition(eventKey)) {
-      if (eventKey === "u") {
+      if (eventKey === INPUT_CONSTANTS.DEBUG_KEY) {
         if (isKeyDown) {
           if (!this.#uKeyHoldTimer) {
             this.#uKeyHoldTimer = setTimeout(() => {
               this.game.debug = !this.game.debug;
-            }, 3000);
+            }, INPUT_CONSTANTS.DEBUG_HOLD_TIME);
           }
         } else {
           clearTimeout(this.#uKeyHoldTimer);

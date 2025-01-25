@@ -1,3 +1,11 @@
+const FLOATING_MESSAGE_CONSTANTS = {
+  FONT: "20px Creepsster",
+  FILL_COLOR: "white",
+  STROKE_COLOR: "black",
+  TIMER_LIMIT: 100,
+  INTERPOLATION_FACTOR: 0.03,
+};
+
 export class FloatingMessage {
   constructor(value, x, y, targetX, targetY) {
     this.value = value;
@@ -10,17 +18,21 @@ export class FloatingMessage {
   }
 
   update() {
-    this.x += (this.targetX - this.x) * 0.03;
-    this.y += (this.targetY - this.y) * 0.03;
+    this.x +=
+      (this.targetX - this.x) * FLOATING_MESSAGE_CONSTANTS.INTERPOLATION_FACTOR;
+    this.y +=
+      (this.targetY - this.y) * FLOATING_MESSAGE_CONSTANTS.INTERPOLATION_FACTOR;
     this.timer++;
-    if (this.timer > 100) this.markedForDeletion = true;
+    if (this.timer > FLOATING_MESSAGE_CONSTANTS.TIMER_LIMIT) {
+      this.markedForDeletion = true;
+    }
   }
 
   draw(context) {
-    context.font = "20px Creepsster";
-    context.fillStyle = "white";
+    context.font = FLOATING_MESSAGE_CONSTANTS.FONT;
+    context.fillStyle = FLOATING_MESSAGE_CONSTANTS.FILL_COLOR;
     context.fillText(this.value, this.x, this.y);
-    context.fillStyle = "black";
+    context.fillStyle = FLOATING_MESSAGE_CONSTANTS.STROKE_COLOR;
     context.fillText(this.value, this.x - 2, this.y - 2);
   }
 }

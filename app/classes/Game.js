@@ -12,8 +12,10 @@ const GAME_CONSTANTS = {
   ENEMY_INTERVAL: 1000,
   MAX_PARTICLES: 200,
   MAX_TIME: 10000,
-  FONT_COLOR: "black",
   INITIAL_LIVES: 1,
+  FONT_COLOR: "black",
+  DEBUG_MODE: false,
+  SCORE: 0,
 };
 
 export class Game {
@@ -23,10 +25,10 @@ export class Game {
     this.groundMargin = GAME_CONSTANTS.GROUND_MARGIN;
     this.speed = 0;
     this.maxSpeed = GAME_CONSTANTS.MAX_SPEED;
-    this.background = this.initBackground();
-    this.player = this.initPlayer();
-    this.input = this.initInputHandler();
-    this.UI = this.initUI();
+    this.background = this.#initBackground(this);
+    this.player = this.#initPlayer(this);
+    this.input = this.#initInputHandler(this);
+    this.UI = this.#initUI(this);
     this.enemies = [];
     this.particles = [];
     this.collisions = [];
@@ -34,8 +36,8 @@ export class Game {
     this.enemyTimer = 0;
     this.enemyInterval = GAME_CONSTANTS.ENEMY_INTERVAL;
     this.maxParticles = GAME_CONSTANTS.MAX_PARTICLES;
-    this.debug = false;
-    this.score = 0;
+    this.debug = GAME_CONSTANTS.DEBUG_MODE;
+    this.score = GAME_CONSTANTS.SCORE;
     this.fontColor = GAME_CONSTANTS.FONT_COLOR;
     this.time = 0;
     this.maxTime = GAME_CONSTANTS.MAX_TIME;
@@ -46,48 +48,16 @@ export class Game {
   }
 
   update(deltaTime) {
-    this.updateTime(deltaTime);
-    this.background.update();
-    this.player.update(this.input.arrayOfKeys, deltaTime);
-    this.updateEnemies(deltaTime);
-    this.updateMessages();
-    this.updateEffects();
-    this.clearParticles();
-    this.filterMarkedEntities();
-  }
-
-  updateTime(deltaTime) {
     this.time += deltaTime;
     if (this.time > this.maxTime) {
       this.gameOver = true;
     }
-  }
-
-  updateEnemies(deltaTime) {
-    if (this.enemyTimer > this.enemyInterval) {
-      this.addEnemy();
-      this.enemyTimer = 0;
-    } else {
-      this.enemyTimer += deltaTime;
-    }
-    this.enemies.forEach((enemy) => enemy.update(deltaTime));
-  }
-
-  updateMessages() {
-    this.floatingMessages.forEach((message) => message.update());
-  }
-
-  updateEffects() {
-    this.particles.forEach((particle) => particle.update());
-  }
-
-  clearParticles() {
-    if (this.particles.length > this.maxParticles) {
-      this.particles.length = this.maxParticles;
-    }
-  }
-
-  filterMarkedEntities() {
+    this.background.update();
+    this.player.update(this.input.arrayOfKeys, deltaTime);
+    this.#handleEnemies(deltaTime);
+    this.#handleMessage();
+    this.#effects();
+    this.#clearArray();
     this.enemies = this.enemies.filter((enemy) => !enemy.markedForDeletion);
     this.particles = this.particles.filter(
       (particle) => !particle.markedForDeletion
@@ -96,7 +66,7 @@ export class Game {
       (collision) => !collision.markedForDeletion
     );
     this.floatingMessages = this.floatingMessages.filter(
-      (message) => !message.markedForDeletion
+      (floatingMessage) => !floatingMessage.markedForDeletion
     );
   }
 
@@ -106,32 +76,68 @@ export class Game {
     this.enemies.forEach((enemy) => enemy.draw(context));
     this.particles.forEach((particle) => particle.draw(context));
     this.collisions.forEach((collision) => collision.draw(context));
-    this.floatingMessages.forEach((message) => message.draw(context));
+    this.floatingMessages.forEach((floatingMessage) =>
+      floatingMessage.draw(context)
+    );
     this.UI.draw(context);
   }
 
   addEnemy() {
-    if (this.speed > 0 && Math.random() < 0.5) {
+    if (this.speed > 0 && Math.random() < 0.5)
       this.enemies.push(new Ground(this));
-    } else if (this.speed > 0) {
-      this.enemies.push(new Climbing(this));
-    }
+    else if (this.speed > 0) this.enemies.push(new Climbing(this));
+
     this.enemies.push(new Flying(this));
   }
 
-  initPlayer() {
-    return new Player(this);
+  #handleEnemies(deltaTime) {
+    if (this.enemyTimer > this.enemyInterval) {
+      this.addEnemy();
+      this.enemyTimer = 0;
+    } else {
+      this.enemyTimer += deltaTime;
+    }
+    this.enemies.forEach((enemy) => {
+      enemy.update(deltaTime);
+    });
   }
 
-  initInputHandler() {
-    return new InputHandler(this);
+  #initPlayer(playerObject) {
+    return new Player(playerObject);
   }
 
-  initBackground() {
-    return new Background(this);
+  #initInputHandler(inputObject) {
+    return new InputHandler(inputObject);
   }
 
-  initUI() {
-    return new UI(this);
+  #initBackground(backgroundObject) {
+    return new Background(backgroundObject);
+  }
+
+  #initUI(uiObject) {
+    return new UI(uiObject);
+  }
+
+  #effects() {
+    this.particles.forEach((particle, index) => {
+      particle.update();
+    });
+  }
+
+  #clearArray() {
+    if (this.particles.length > this.maxParticles)
+      this.particles.length = this.maxParticles;
+  }
+
+  #handleMessage() {
+    this.floatingMessages.forEach((floatingMessage) =>
+      floatingMessage.update()
+    );
+  }
+
+  handleCollisionSPrites(deltaTime) {
+    this.collisions.forEach((collision, index) => {
+      collision.update(deltaTime);
+    });
   }
 }
