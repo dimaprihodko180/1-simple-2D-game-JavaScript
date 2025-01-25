@@ -1,5 +1,6 @@
 import { State } from "../base/State.js";
 import { Dust } from "../effects/Dust.js";
+import { PLAYER_STATE_CONSTANTS } from "../../enums and constants/states.js";
 
 export class StateRunning extends State {
   constructor(game) {
@@ -7,17 +8,20 @@ export class StateRunning extends State {
   }
 
   enter() {
-    this.game.player.frameX = 0;
-    this.game.player.maxFrame = 8;
-    this.game.player.frameY = 3;
+    const { FRAME_X, MAX_FRAME, FRAME_Y } =
+      PLAYER_STATE_CONSTANTS.FRAME.RUNNING;
+    this.game.player.frameX = FRAME_X;
+    this.game.player.maxFrame = MAX_FRAME;
+    this.game.player.frameY = FRAME_Y;
   }
 
   handlerInput(input) {
+    const { DUST } = PLAYER_STATE_CONSTANTS.PARTICLE_OFFSETS;
     this.game.particles.unshift(
       new Dust(
         this.game,
-        this.game.player.x + this.game.player.width * 0.5 - 40,
-        this.game.player.y + this.game.player.height - 10
+        this.game.player.x + this.game.player.width * 0.5 + DUST.X,
+        this.game.player.y + this.game.player.height + DUST.Y
       )
     );
     if (this.keys.KEY_ARROW_DOWN.some((key) => input.includes(key))) {

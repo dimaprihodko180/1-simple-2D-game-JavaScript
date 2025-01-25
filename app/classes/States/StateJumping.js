@@ -1,4 +1,5 @@
 import { State } from "../base/State.js";
+import { PLAYER_STATE_CONSTANTS } from "../../enums and constants/states.js";
 
 export class StateJumping extends State {
   constructor(game) {
@@ -6,10 +7,14 @@ export class StateJumping extends State {
   }
 
   enter() {
-    if (this.game.player.onGround()) this.game.player.vy = -27;
-    this.game.player.frameX = 0;
-    this.game.player.maxFrame = 6;
-    this.game.player.frameY = 1;
+    if (this.game.player.onGround()) {
+      this.game.player.vy = PLAYER_STATE_CONSTANTS.JUMP_VELOCITY;
+    }
+    const { FRAME_X, MAX_FRAME, FRAME_Y } =
+      PLAYER_STATE_CONSTANTS.FRAME.JUMPING;
+    this.game.player.frameX = FRAME_X;
+    this.game.player.maxFrame = MAX_FRAME;
+    this.game.player.frameY = FRAME_Y;
   }
 
   handlerInput(input) {
