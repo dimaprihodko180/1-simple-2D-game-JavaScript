@@ -1,5 +1,6 @@
 import { STATES } from "../../enums and constants/states.js";
 import { KEYS } from "../../enums and constants/keys.js";
+import { BASES_CONSTANTS } from "../../enums and constants/bases.js";
 
 export class State {
   constructor(game, index) {

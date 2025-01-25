@@ -1,6 +1,6 @@
 import { Particle } from "../Base/Particle.js";
 import { FileManager } from "../../links/FileManager.js";
-import { PARTICLE_CONSTANTS } from "../../enums and constants/effects.js";
+import { EFFECT_CONSTANTS } from "../../enums and constants/effects.js";
 
 export class Splash extends Particle {
   constructor(game, x, y) {
@@ -14,7 +14,7 @@ export class Splash extends Particle {
       SPEED_Y_MAX,
       GRAVITY_INCREMENT,
       IMAGE,
-    } = PARTICLE_CONSTANTS.SPLASH;
+    } = EFFECT_CONSTANTS.SPLASH;
 
     this.size = Math.random() * (SIZE_MAX - SIZE_MIN) + SIZE_MIN;
     this.x = x - this.size * 0.4;

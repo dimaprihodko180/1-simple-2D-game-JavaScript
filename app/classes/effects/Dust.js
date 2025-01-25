@@ -1,5 +1,5 @@
 import { Particle } from "../Base/Particle.js";
-import { PARTICLE_CONSTANTS } from "../../enums and constants/effects.js";
+import { EFFECT_CONSTANTS } from "../../enums and constants/effects.js";
 
 export class Dust extends Particle {
   constructor(game, x, y) {
@@ -12,7 +12,7 @@ export class Dust extends Particle {
       SPEED_Y_MIN,
       SPEED_Y_MAX,
       COLOR,
-    } = PARTICLE_CONSTANTS.DUST;
+    } = EFFECT_CONSTANTS.DUST;
 
     this.size = Math.random() * (SIZE_MAX - SIZE_MIN) + SIZE_MIN;
     this.x = x;

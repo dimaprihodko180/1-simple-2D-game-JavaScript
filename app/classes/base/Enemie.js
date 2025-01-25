@@ -1,9 +1,11 @@
+import { BASES_CONSTANTS } from "../../enums and constants/bases.js";
+
 export class Enemie {
   constructor() {
     this.frameX = 0;
     this.frameY = 0;
-    this.fps = 20;
-    this.frameInterval = 1000 / this.fps;
+    this.fps = BASES_CONSTANTS.ENEMY.FPS;
+    this.frameInterval = BASES_CONSTANTS.ENEMY.FRAME_INTERVAL;
     this.frameTimer = 0;
     this.markedForDeletion = false;
   }
@@ -14,8 +16,9 @@ export class Enemie {
   }
 
   draw(context) {
-    if (this.game.debug)
+    if (this.game.debug) {
       context.strokeRect(this.x, this.y, this.width, this.height);
+    }
     context.drawImage(
       this.image,
       this.frameX * this.width,
@@ -30,18 +33,25 @@ export class Enemie {
   }
 
   #movement(deltaTime) {
-    this.x -= this.speedX + this.game.speed;
+    this.x -=
+      this.speedX + this.game.speed * BASES_CONSTANTS.ENEMY.MOVEMENT_SPEED;
     this.y += this.speedY;
+
     if (this.frameTimer > this.frameInterval) {
       this.frameTimer = 0;
-      if (this.frameX < this.maxFrame) this.frameX++;
-      else this.frameX = 0;
+      if (this.frameX < this.maxFrame) {
+        this.frameX++;
+      } else {
+        this.frameX = 0;
+      }
     } else {
       this.frameTimer += deltaTime;
     }
   }
 
   #checkEnemyInScreen() {
-    if (this.x < -this.width) this.markedForDeletion = true;
+    if (this.x < -this.width) {
+      this.markedForDeletion = true;
+    }
   }
 }

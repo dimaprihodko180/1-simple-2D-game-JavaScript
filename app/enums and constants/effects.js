@@ -1,4 +1,4 @@
-export const PARTICLE_CONSTANTS = {
+export const EFFECT_CONSTANTS = {
   DUST: {
     SIZE_MIN: 15,
     SIZE_MAX: 25,

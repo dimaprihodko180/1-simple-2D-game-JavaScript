@@ -1,12 +1,12 @@
 import { Player } from "./Player.js";
 import { InputHandler } from "./InputHandler.js";
-import { Background } from "../background/Background.js";
+import { Background } from "../Background/Background.js";
 import { Flying } from "./Enemies/Flying.js";
 import { Climbing } from "./Enemies/Climbing.js";
 import { Ground } from "./Enemies/Ground.js";
 import { UI } from "./UI.js";
 
-const GAME_CONSTANTS = {
+const BASES_CONSTANTS = {
   GROUND_MARGIN: 80,
   MAX_SPEED: 6,
   ENEMY_INTERVAL: 1000,
@@ -22,10 +22,10 @@ export class Game {
   constructor(width, height) {
     this.width = width;
     this.height = height;
-    this.groundMargin = GAME_CONSTANTS.GROUND_MARGIN;
+    this.groundMargin = BASES_CONSTANTS.GROUND_MARGIN;
     this.speed = 0;
-    this.maxSpeed = GAME_CONSTANTS.MAX_SPEED;
-    this.background = this.#initBackground(this);
+    this.maxSpeed = BASES_CONSTANTS.MAX_SPEED;
+    this.Background = this.#initBackground(this);
     this.player = this.#initPlayer(this);
     this.input = this.#initInputHandler(this);
     this.UI = this.#initUI(this);
@@ -34,14 +34,14 @@ export class Game {
     this.collisions = [];
     this.floatingMessages = [];
     this.enemyTimer = 0;
-    this.enemyInterval = GAME_CONSTANTS.ENEMY_INTERVAL;
-    this.maxParticles = GAME_CONSTANTS.MAX_PARTICLES;
-    this.debug = GAME_CONSTANTS.DEBUG_MODE;
-    this.score = GAME_CONSTANTS.SCORE;
-    this.fontColor = GAME_CONSTANTS.FONT_COLOR;
+    this.enemyInterval = BASES_CONSTANTS.ENEMY_INTERVAL;
+    this.maxParticles = BASES_CONSTANTS.MAX_PARTICLES;
+    this.debug = BASES_CONSTANTS.DEBUG_MODE;
+    this.score = BASES_CONSTANTS.SCORE;
+    this.fontColor = BASES_CONSTANTS.FONT_COLOR;
     this.time = 0;
-    this.maxTime = GAME_CONSTANTS.MAX_TIME;
-    this.lives = GAME_CONSTANTS.INITIAL_LIVES;
+    this.maxTime = BASES_CONSTANTS.MAX_TIME;
+    this.lives = BASES_CONSTANTS.INITIAL_LIVES;
     this.gameOver = false;
     this.player.currentState = this.player.state[0];
     this.player.currentState.enter();
@@ -52,7 +52,7 @@ export class Game {
     if (this.time > this.maxTime) {
       this.gameOver = true;
     }
-    this.background.update();
+    this.Background.update();
     this.player.update(this.input.arrayOfKeys, deltaTime);
     this.#handleEnemies(deltaTime);
     this.#handleMessage();
@@ -71,7 +71,7 @@ export class Game {
   }
 
   draw(context) {
-    this.background.draw(context);
+    this.Background.draw(context);
     this.player.draw(context);
     this.enemies.forEach((enemy) => enemy.draw(context));
     this.particles.forEach((particle) => particle.draw(context));
