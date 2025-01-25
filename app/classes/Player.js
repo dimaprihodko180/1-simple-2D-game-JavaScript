@@ -1,4 +1,4 @@
-import { KEYS } from "../enums and constants/keys.js";
+import { KEYS } from "../main/keys.js";
 import { StateSitting } from "./States/StateSitting.js";
 import { StateRunning } from "./States/StateRunning.js";
 import { StateJumping } from "./States/StateJumping.js";

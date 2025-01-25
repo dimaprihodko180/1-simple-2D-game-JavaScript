@@ -11,8 +11,8 @@ export class Enemie {
   }
 
   update(deltaTime) {
-    this.#movement(deltaTime);
-    this.#checkEnemyInScreen();
+    this.movement(deltaTime);
+    this.checkEnemyInScreen();
   }
 
   draw(context) {
@@ -32,7 +32,7 @@ export class Enemie {
     );
   }
 
-  #movement(deltaTime) {
+  movement(deltaTime) {
     this.x -=
       this.speedX + this.game.speed * BASES_CONSTANTS.ENEMY.MOVEMENT_SPEED;
     this.y += this.speedY;
@@ -49,7 +49,7 @@ export class Enemie {
     }
   }
 
-  #checkEnemyInScreen() {
+  checkEnemyInScreen() {
     if (this.x < -this.width) {
       this.markedForDeletion = true;
     }

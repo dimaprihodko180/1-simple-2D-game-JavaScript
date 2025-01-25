@@ -25,10 +25,10 @@ export class Game {
     this.groundMargin = BASES_CONSTANTS.GROUND_MARGIN;
     this.speed = 0;
     this.maxSpeed = BASES_CONSTANTS.MAX_SPEED;
-    this.Background = this.#initBackground(this);
-    this.player = this.#initPlayer(this);
-    this.input = this.#initInputHandler(this);
-    this.UI = this.#initUI(this);
+    this.Background = this.initBackground(this);
+    this.player = this.initPlayer(this);
+    this.input = this.initInputHandler(this);
+    this.UI = this.initUI(this);
     this.enemies = [];
     this.particles = [];
     this.collisions = [];
@@ -54,10 +54,10 @@ export class Game {
     }
     this.Background.update();
     this.player.update(this.input.arrayOfKeys, deltaTime);
-    this.#handleEnemies(deltaTime);
-    this.#handleMessage();
-    this.#effects();
-    this.#clearArray();
+    this.handleEnemies(deltaTime);
+    this.handleMessage();
+    this.effects();
+    this.clearArray();
     this.enemies = this.enemies.filter((enemy) => !enemy.markedForDeletion);
     this.particles = this.particles.filter(
       (particle) => !particle.markedForDeletion
@@ -90,7 +90,7 @@ export class Game {
     this.enemies.push(new Flying(this));
   }
 
-  #handleEnemies(deltaTime) {
+  handleEnemies(deltaTime) {
     if (this.enemyTimer > this.enemyInterval) {
       this.addEnemy();
       this.enemyTimer = 0;
@@ -102,34 +102,34 @@ export class Game {
     });
   }
 
-  #initPlayer(playerObject) {
+  initPlayer(playerObject) {
     return new Player(playerObject);
   }
 
-  #initInputHandler(inputObject) {
+  initInputHandler(inputObject) {
     return new InputHandler(inputObject);
   }
 
-  #initBackground(backgroundObject) {
+  initBackground(backgroundObject) {
     return new Background(backgroundObject);
   }
 
-  #initUI(uiObject) {
+  initUI(uiObject) {
     return new UI(uiObject);
   }
 
-  #effects() {
+  effects() {
     this.particles.forEach((particle, index) => {
       particle.update();
     });
   }
 
-  #clearArray() {
+  clearArray() {
     if (this.particles.length > this.maxParticles)
       this.particles.length = this.maxParticles;
   }
 
-  #handleMessage() {
+  handleMessage() {
     this.floatingMessages.forEach((floatingMessage) =>
       floatingMessage.update()
     );

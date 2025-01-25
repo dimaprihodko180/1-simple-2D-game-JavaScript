@@ -1,4 +1,4 @@
-import { KEYS } from "../enums and constants/keys.js";
+import { KEYS } from "../main/keys.js";
 
 const INPUT_CONSTANTS = {
   DEBUG_KEY: "u",
@@ -6,19 +6,16 @@ const INPUT_CONSTANTS = {
 };
 
 export class InputHandler {
-  #keys = [];
-  #uKeyHoldTimer = null;
-
   constructor(game) {
     this.game = game;
+    this.keys = [];
+    this.uKeyHoldTimer = null;
 
-    window.addEventListener("keydown", (e) =>
-      this.#handleKeyEvent(e.key, true)
-    );
-    window.addEventListener("keyup", (e) => this.#handleKeyEvent(e.key, false));
+    window.addEventListener("keydown", (e) => this.handleKeyEvent(e.key, true));
+    window.addEventListener("keyup", (e) => this.handleKeyEvent(e.key, false));
   }
 
-  #initButtonCondition(event) {
+  initButtonCondition(event) {
     return (
       KEYS.KEY_ARROW_DOWN.includes(event) ||
       KEYS.KEY_ARROW_UP.includes(event) ||
@@ -29,31 +26,31 @@ export class InputHandler {
     );
   }
 
-  #handleKeyEvent(eventKey, isKeyDown) {
-    if (this.#initButtonCondition(eventKey)) {
+  handleKeyEvent(eventKey, isKeyDown) {
+    if (this.initButtonCondition(eventKey)) {
       if (eventKey === INPUT_CONSTANTS.DEBUG_KEY) {
         if (isKeyDown) {
-          if (!this.#uKeyHoldTimer) {
-            this.#uKeyHoldTimer = setTimeout(() => {
+          if (!this.uKeyHoldTimer) {
+            this.uKeyHoldTimer = setTimeout(() => {
               this.game.debug = !this.game.debug;
             }, INPUT_CONSTANTS.DEBUG_HOLD_TIME);
           }
         } else {
-          clearTimeout(this.#uKeyHoldTimer);
-          this.#uKeyHoldTimer = null;
+          clearTimeout(this.uKeyHoldTimer);
+          this.uKeyHoldTimer = null;
         }
-      } else if (isKeyDown && this.#keys.indexOf(eventKey) === -1) {
-        this.#keys.push(eventKey);
+      } else if (isKeyDown && this.keys.indexOf(eventKey) === -1) {
+        this.keys.push(eventKey);
       } else if (!isKeyDown) {
-        const index = this.#keys.indexOf(eventKey);
+        const index = this.keys.indexOf(eventKey);
         if (index !== -1) {
-          this.#keys.splice(index, 1);
+          this.keys.splice(index, 1);
         }
       }
     }
   }
 
   get arrayOfKeys() {
-    return this.#keys;
+    return this.keys;
   }
 }
