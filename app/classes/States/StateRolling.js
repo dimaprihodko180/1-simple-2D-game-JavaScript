@@ -1,4 +1,4 @@
-import { State } from "../base/State.js";
+import { State } from "../Base/State.js";
 import { Fire } from "../effects/Fire.js";
 import { PLAYER_STATE_CONSTANTS } from "../../enums and constants/states.js";
 

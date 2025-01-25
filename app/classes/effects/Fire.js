@@ -1,17 +1,21 @@
-import { Particle } from "../base/Particle.js";
+import { Particle } from "../Base/Particle.js";
 import { FileManager } from "../../links/FileManager.js";
+import { PARTICLE_CONSTANTS } from "../../enums and constants/effects.js";
 
 export class Fire extends Particle {
   constructor(game, x, y) {
     super(game);
-    this.image = new FileManager().images.fire;
-    this.size = Math.random() * 100 + 50;
+    const { SIZE_MIN, SIZE_MAX, SPEED_X, SPEED_Y, VA_MIN, VA_MAX, IMAGE } =
+      PARTICLE_CONSTANTS.FIRE;
+
+    this.image = new FileManager().images[IMAGE];
+    this.size = Math.random() * (SIZE_MAX - SIZE_MIN) + SIZE_MIN;
     this.x = x;
     this.y = y;
-    this.speedX = 1;
-    this.speedY = 1;
+    this.speedX = SPEED_X;
+    this.speedY = SPEED_Y;
     this.angle = 0;
-    this.va = Math.random() * 0.2 - 0.1;
+    this.va = Math.random() * (VA_MAX - VA_MIN) + VA_MIN;
   }
 
   update() {
