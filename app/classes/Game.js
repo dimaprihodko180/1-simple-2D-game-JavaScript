@@ -6,13 +6,13 @@ import { Climbing } from "./Enemies/Climbing.js";
 import { Ground } from "./Enemies/Ground.js";
 import { UI } from "./UI.js";
 
-const BASES_CONSTANTS = {
+export const GAME_CONSTANTS = {
   GROUND_MARGIN: 80,
   MAX_SPEED: 6,
   ENEMY_INTERVAL: 1000,
   MAX_PARTICLES: 200,
-  MAX_TIME: 10000,
-  INITIAL_LIVES: 1,
+  MAX_TIME_MIN: 0.5,
+  INITIAL_LIVES: 10,
   FONT_COLOR: "black",
   DEBUG_MODE: false,
   SCORE: 0,
@@ -22,9 +22,9 @@ export class Game {
   constructor(width, height) {
     this.width = width;
     this.height = height;
-    this.groundMargin = BASES_CONSTANTS.GROUND_MARGIN;
+    this.groundMargin = GAME_CONSTANTS.GROUND_MARGIN;
     this.speed = 0;
-    this.maxSpeed = BASES_CONSTANTS.MAX_SPEED;
+    this.maxSpeed = GAME_CONSTANTS.MAX_SPEED;
     this.Background = this.initBackground(this);
     this.player = this.initPlayer(this);
     this.input = this.initInputHandler(this);
@@ -34,14 +34,14 @@ export class Game {
     this.collisions = [];
     this.floatingMessages = [];
     this.enemyTimer = 0;
-    this.enemyInterval = BASES_CONSTANTS.ENEMY_INTERVAL;
-    this.maxParticles = BASES_CONSTANTS.MAX_PARTICLES;
-    this.debug = BASES_CONSTANTS.DEBUG_MODE;
-    this.score = BASES_CONSTANTS.SCORE;
-    this.fontColor = BASES_CONSTANTS.FONT_COLOR;
+    this.enemyInterval = GAME_CONSTANTS.ENEMY_INTERVAL;
+    this.maxParticles = GAME_CONSTANTS.MAX_PARTICLES;
+    this.debug = GAME_CONSTANTS.DEBUG_MODE;
+    this.score = GAME_CONSTANTS.SCORE;
+    this.fontColor = GAME_CONSTANTS.FONT_COLOR;
     this.time = 0;
-    this.maxTime = BASES_CONSTANTS.MAX_TIME;
-    this.lives = BASES_CONSTANTS.INITIAL_LIVES;
+    this.maxTime = GAME_CONSTANTS.MAX_TIME_MIN * 60 * 1000;
+    this.lives = GAME_CONSTANTS.INITIAL_LIVES;
     this.gameOver = false;
     this.player.currentState = this.player.state[0];
     this.player.currentState.enter();
@@ -119,7 +119,7 @@ export class Game {
   }
 
   effects() {
-    this.particles.forEach((particle, index) => {
+    this.particles.forEach((particle) => {
       particle.update();
     });
   }
@@ -136,7 +136,7 @@ export class Game {
   }
 
   handleCollisionSPrites(deltaTime) {
-    this.collisions.forEach((collision, index) => {
+    this.collisions.forEach((collision) => {
       collision.update(deltaTime);
     });
   }

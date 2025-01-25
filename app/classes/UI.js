@@ -1,9 +1,11 @@
-import { FileManager } from "../Links/FileManager.js";
+import { KEYS } from "../main/keys.js";
+import { FileManager } from "../links/FileManager.js";
+import { GAME_CONSTANTS } from "./Game.js";
 
 const UI_CONSTANTS = {
   FONT: {
     SIZE: 30,
-    FAMILY: "Helvetica",
+    FAMILY: "Rubik Wet Paint",
     SMALL_MULTIPLIER: 0.75,
     LARGE_MULTIPLIER: 2,
   },
@@ -26,9 +28,18 @@ const UI_CONSTANTS = {
     GAME_OVER_SUBTEXT_OFFSET: 40,
   },
   GAME_OVER: {
-    WIN_MESSAGE: "Игра закончена !",
-    LOSE_MESSAGE: "ВЫ ПРОИГРАЛИ !",
-    RESTART_PROMPT: "Press Enter to Restart",
+    WIN_MESSAGE: {
+      TEXT: "Игра закончена !",
+      FONT_FAMILY: "Rubik Wet Paint",
+    },
+    LOSE_MESSAGE: {
+      TEXT: "ВЫ ПРОИГРАЛИ !",
+      FONT_FAMILY: "Press Start 2P",
+    },
+    RESTART_PROMPT: {
+      TEXT: `Нажмите ${KEYS.ANOTHERS_KEYS[0]} чтобы начать заново`,
+      FONT_FAMILY: "Rubik Wet Paint",
+    },
   },
 };
 
@@ -46,12 +57,12 @@ export class UI {
     context.shadowOffsetY = UI_CONSTANTS.SHADOW.OFFSET_Y;
     context.shadowColor = UI_CONSTANTS.SHADOW.COLOR;
     context.shadowBlur = UI_CONSTANTS.SHADOW.BLUR;
+
     context.font = `${this.fontSize}px ${this.fontFamily}`;
     context.textAlign = "left";
     context.fillStyle = this.game.font;
-
     context.fillText(
-      `Score: ${this.game.score}`,
+      `Счёт: ${this.game.score}`,
       UI_CONSTANTS.POSITION.SCORE_X,
       UI_CONSTANTS.POSITION.SCORE_Y
     );
@@ -60,7 +71,9 @@ export class UI {
       this.fontFamily
     }`;
     context.fillText(
-      `Time: ${(this.game.time * 0.001).toFixed(1)}`,
+      `Время: ${(this.game.time * 0.001).toFixed(1)} / ${
+        GAME_CONSTANTS.MAX_TIME_MIN * 60
+      } секунд`,
       UI_CONSTANTS.POSITION.TIME_X,
       UI_CONSTANTS.POSITION.TIME_Y
     );
@@ -78,14 +91,23 @@ export class UI {
 
     if (this.game.gameOver) {
       context.textAlign = "center";
+
       context.font = `${this.fontSize * UI_CONSTANTS.FONT.LARGE_MULTIPLIER}px ${
-        this.fontFamily
+        UI_CONSTANTS.GAME_OVER.WIN_MESSAGE.FONT_FAMILY
       }`;
       const message =
         this.game.score > 2
-          ? UI_CONSTANTS.GAME_OVER.WIN_MESSAGE
-          : UI_CONSTANTS.GAME_OVER.LOSE_MESSAGE;
+          ? UI_CONSTANTS.GAME_OVER.WIN_MESSAGE.TEXT
+          : UI_CONSTANTS.GAME_OVER.LOSE_MESSAGE.TEXT;
 
+      const messageFont =
+        this.game.score > 2
+          ? UI_CONSTANTS.GAME_OVER.WIN_MESSAGE.FONT_FAMILY
+          : UI_CONSTANTS.GAME_OVER.LOSE_MESSAGE.FONT_FAMILY;
+
+      context.font = `${
+        this.fontSize * UI_CONSTANTS.FONT.LARGE_MULTIPLIER
+      }px ${messageFont}`;
       context.fillText(
         message,
         this.game.width * 0.5,
@@ -93,10 +115,10 @@ export class UI {
       );
 
       context.font = `${this.fontSize * UI_CONSTANTS.FONT.SMALL_MULTIPLIER}px ${
-        this.fontFamily
+        UI_CONSTANTS.GAME_OVER.RESTART_PROMPT.FONT_FAMILY
       }`;
       context.fillText(
-        UI_CONSTANTS.GAME_OVER.RESTART_PROMPT,
+        UI_CONSTANTS.GAME_OVER.RESTART_PROMPT.TEXT,
         this.game.width * 0.5,
         this.game.height * UI_CONSTANTS.POSITION.GAME_OVER_TEXT_Y +
           UI_CONSTANTS.POSITION.GAME_OVER_SUBTEXT_OFFSET
