@@ -1,4 +1,4 @@
-import { FileManager } from "../links/FileManager.js";
+import { FileManager } from "../Links/FileManager.js";
 
 const UI_CONSTANTS = {
   FONT: {
@@ -26,8 +26,8 @@ const UI_CONSTANTS = {
     GAME_OVER_SUBTEXT_OFFSET: 40,
   },
   GAME_OVER: {
-    WIN_MESSAGE: "Game Over",
-    LOSE_MESSAGE: "You Died",
+    WIN_MESSAGE: "Игра закончена !",
+    LOSE_MESSAGE: "ВЫ ПРОИГРАЛИ !",
     RESTART_PROMPT: "Press Enter to Restart",
   },
 };

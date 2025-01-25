@@ -1,5 +1,5 @@
 import { CANVAS } from "./canvans.js";
-import { Game } from "../classes/Game.js";
+import { Game } from "../Classes/Game.js";
 
 export function windowLoader() {
   window.addEventListener("DOMContentLoaded", () => {
